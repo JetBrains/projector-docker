@@ -1,0 +1,26 @@
+*** idea.sh	2019-12-18 09:20:32.000000000 +0300
+--- idea-prj.sh	2020-01-09 16:18:38.849839330 +0300
+***************
+*** 199,204 ****
+--- 199,205 ----
+  CLASSPATH="$CLASSPATH:$IDE_HOME/lib/trove4j.jar"
+  CLASSPATH="$CLASSPATH:$IDE_HOME/lib/jna.jar"
+  CLASSPATH="$CLASSPATH:$JDK/lib/tools.jar"
++ CLASSPATH="$CLASSPATH:$IDE_HOME/projector-server-1.0-SNAPSHOT.jar"
+  # shellcheck disable=SC2154
+  if [ -n "$IDEA_CLASSPATH" ]; then
+    CLASSPATH="$CLASSPATH:$IDEA_CLASSPATH"
+***************
+*** 218,222 ****
+    "-Djb.vmOptionsFile=$VM_OPTIONS_FILE" \
+    ${IDE_PROPERTIES_PROPERTY} \
+    -Didea.platform.prefix=Idea -Didea.jre.check=true \
+!   com.intellij.idea.Main \
+    "$@"
+--- 219,224 ----
+    "-Djb.vmOptionsFile=$VM_OPTIONS_FILE" \
+    ${IDE_PROPERTIES_PROPERTY} \
+    -Didea.platform.prefix=Idea -Didea.jre.check=true \
+!   -Dcom.intellij.projector.server.classToLaunch=com.intellij.idea.Main \
+!   com.intellij.projector.server.ProjectorLauncher \
+    "$@"
