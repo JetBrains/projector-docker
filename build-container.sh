@@ -5,7 +5,7 @@ set -x # Activate debugging to show execution details: all commands will be prin
 
 # create dir for transfrering projector files:
 TO_CONTAINER_DIR=to-container
-rm -r $TO_CONTAINER_DIR
+rm -rf $TO_CONTAINER_DIR
 mkdir $TO_CONTAINER_DIR
 
 # copy static files:
