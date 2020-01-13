@@ -13,7 +13,7 @@ If you've received a `tar.gz` Docker image, you probably should run the followin
 
 To access the run IDEA, use <http://172.31.131.39:8080/?flushDelay=1&host=localhost&port=8887>.
 
-## Scripts lists
+## Script list
 ### `clone-projector-core.sh`
 Clones projector from Git.
 
