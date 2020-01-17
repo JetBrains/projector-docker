@@ -10,15 +10,22 @@ mkdir $TO_CONTAINER_DIR
 
 # copy static files:
 cp static/idea.sh.patch $TO_CONTAINER_DIR
+cp static/index.html.patch $TO_CONTAINER_DIR
 cp static/run.sh $TO_CONTAINER_DIR
 
 # build projector:
 cd projector-core
-#./gradlew :projector-client-web:runDceKotlinJs -- todo: copy client to container too
+./gradlew :projector-client-web:runDceKotlinJs
 ./gradlew :projector-server:jar
 cd ../
 
 # copy built projector:
+cp projector-core/projector-client-web/build/kotlin-js-min/main/kotlin.js $TO_CONTAINER_DIR
+cp projector-core/projector-client-web/build/kotlin-js-min/main/kotlinx-serialization-kotlinx-serialization-runtime.js $TO_CONTAINER_DIR
+cp projector-core/projector-client-web/build/kotlin-js-min/main/projector-client-web.js $TO_CONTAINER_DIR
+cp projector-core/projector-client-web/build/kotlin-js-min/main/projector-common.js $TO_CONTAINER_DIR
+cp projector-core/projector-client-web/src/main/resources/index.html $TO_CONTAINER_DIR
+cp projector-core/projector-client-web/src/main/resources/pj.png $TO_CONTAINER_DIR
 cp projector-core/projector-server/build/libs/projector-server-1.0-SNAPSHOT.jar $TO_CONTAINER_DIR
 
 # build container:

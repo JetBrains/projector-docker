@@ -11,7 +11,7 @@ If you've received a `tar.gz` Docker image, you probably should run the followin
 1. `load-image.sh`.
 1. `run-container.sh`.
 
-To access the run IDEA, use <http://172.31.131.39:8080/?flushDelay=1&host=localhost&port=8887>.
+To access the run IDEA, use <http://localhost:8080/projector/index.html?flushDelay=1&host=localhost&port=8887>.
 
 ## Script list
 ### `clone-projector-core.sh`

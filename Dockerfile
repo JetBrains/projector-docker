@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM nginx
 
 # copy projector files to the container:
 ENV TO_CONTAINER_DIR /to-container
@@ -15,6 +15,15 @@ RUN true \
     && apt-get update \
     && apt-get install wget -y \
     && apt-get install patch -y \
+# prepare nginx:
+    && patch $TO_CONTAINER_DIR/index.html < $TO_CONTAINER_DIR/index.html.patch \
+    && mkdir -p /usr/share/nginx/html/projector \
+    && cp $TO_CONTAINER_DIR/kotlin.js /usr/share/nginx/html/projector/ \
+    && cp $TO_CONTAINER_DIR/kotlinx-serialization-kotlinx-serialization-runtime.js /usr/share/nginx/html/projector/ \
+    && cp $TO_CONTAINER_DIR/projector-client-web.js /usr/share/nginx/html/projector/ \
+    && cp $TO_CONTAINER_DIR/projector-common.js /usr/share/nginx/html/projector/ \
+    && cp $TO_CONTAINER_DIR/index.html /usr/share/nginx/html/projector/ \
+    && cp $TO_CONTAINER_DIR/pj.png /usr/share/nginx/html/projector/ \
 # TODO: should we remove this libraries?
     && apt-get install libxext6 libxrender1 libxtst6 libxi6 libfreetype6 -y \
 # create the Projector dir:
