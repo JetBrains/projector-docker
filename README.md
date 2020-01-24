@@ -11,7 +11,15 @@ If you've received a `tar.gz` Docker image, you probably should run the followin
 1. `load-image.sh`.
 1. `run-container.sh`.
 
-To access the run IDEA, use <http://localhost:8080/projector/index.html?flushDelay=1&host=localhost&port=8887>.
+Both instructions will run **nginx** and **projector with IDEA** locally.
+
+To access projector with IDEA, use <http://localhost:8080/projector/>.
+
+## Accessing IDEA run on another machine
+
+If you want to access IDEA run on another host, you can change page parameters: <http://localhost:8080/projector/?host=localhost&port=8887> (these are default ones).
+
+You need to run docker on different machines: change the `run-container.sh` script to launch nginx on the first one and projector on the second one.
 
 ## Script list
 ### `clone-projector-core.sh`
