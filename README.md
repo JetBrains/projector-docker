@@ -41,3 +41,8 @@ Loads the Docker image locally.
 Runs the Docker container.
 
 Starts the server on 8887.
+
+### `run-container-mounted.sh`
+Runs the Docker container. Also, it mounts your `~/IdeaProjects` dir to the container, so you can open your projects. Feel free to change `~/IdeaProjects` dir to your desired one.
+
+Starts the server on 8887.
