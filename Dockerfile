@@ -54,4 +54,5 @@ RUN true \
     && apt-get install libxext6 libxrender1 libxtst6 libxi6 libfreetype6 -y \
 ##### REDUCING IMAGE SIZE: #####
 # clean apt to reduce image size:
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /var/cache/apt
