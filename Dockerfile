@@ -4,7 +4,7 @@ FROM debian AS ideaDownloader
 RUN apt-get update
 RUN apt-get install wget -y
 # download idea to the idea/ dir:
-ENV IDEA_ARCHIVE_NAME ideaIC-2019.3.1.tar.gz
+ENV IDEA_ARCHIVE_NAME ideaIC-2019.3.2.tar.gz
 RUN wget -q https://download.jetbrains.com/idea/$IDEA_ARCHIVE_NAME -O - | tar -xz
 RUN find . -maxdepth 1 -type d -name "idea-*" -execdir mv {} /idea \;
 
