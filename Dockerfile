@@ -49,7 +49,7 @@ RUN true \
     && mv $PROJECTOR_DIR/projector-common.js /usr/share/nginx/html/projector/ \
     && mv $PROJECTOR_DIR/index.html /usr/share/nginx/html/projector/ \
     && mv $PROJECTOR_DIR/pj.png /usr/share/nginx/html/projector/ \
-# install libraries: TODO: should we remove these libraries?
+# install libraries:
     && apt-get update \
     && apt-get install libxext6 libxrender1 libxtst6 libxi6 libfreetype6 -y \
 ##### REDUCING IMAGE SIZE: #####
