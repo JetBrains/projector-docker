@@ -11,7 +11,9 @@ mkdir $TO_CONTAINER_DIR
 # copy static files:
 cp static/idea.sh.patch $TO_CONTAINER_DIR
 cp static/index.html.patch $TO_CONTAINER_DIR
+cp static/nginx.conf.patch $TO_CONTAINER_DIR
 cp static/run.sh $TO_CONTAINER_DIR
+cp static/site.conf.patch $TO_CONTAINER_DIR
 
 # build projector:
 cd projector-core

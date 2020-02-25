@@ -49,10 +49,25 @@ RUN true \
     && mv $PROJECTOR_DIR/projector-common.js /usr/share/nginx/html/projector/ \
     && mv $PROJECTOR_DIR/index.html /usr/share/nginx/html/projector/ \
     && mv $PROJECTOR_DIR/pj.png /usr/share/nginx/html/projector/ \
-# install libraries:
+# install packages:
     && apt-get update \
     && apt-get install libxext6 libxrender1 libxtst6 libxi6 libfreetype6 -y \
-##### REDUCING IMAGE SIZE: #####
+    && apt-get install patch -y \
 # clean apt to reduce image size:
     && rm -rf /var/lib/apt/lists/* \
-    && rm -rf /var/cache/apt
+    && rm -rf /var/cache/apt \
+# change user to non-root (http://pjdietz.com/2016/08/28/nginx-in-docker-without-root.html):
+    && patch /etc/nginx/nginx.conf < $PROJECTOR_DIR/nginx.conf.patch \
+    && rm $PROJECTOR_DIR/nginx.conf.patch \
+    && patch /etc/nginx/conf.d/default.conf < $PROJECTOR_DIR/site.conf.patch \
+    && rm $PROJECTOR_DIR/site.conf.patch \
+    && touch /var/run/nginx.pid \
+    && useradd -m -d /home/projector-user -s /bin/bash projector-user \
+    && chown -R projector-user.projector-user $PROJECTOR_DIR \
+    && chown -R projector-user.projector-user /usr/share/nginx \
+    && chown -R projector-user.projector-user /var/cache/nginx \
+    && chown -R projector-user.projector-user /var/run/nginx.pid \
+    && chown projector-user.projector-user run.sh
+
+USER projector-user
+ENV HOME /home/projector-user
