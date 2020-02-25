@@ -9,6 +9,7 @@ rm -rf $TO_CONTAINER_DIR
 mkdir $TO_CONTAINER_DIR
 
 # copy static files:
+cp -r static/projector-user $TO_CONTAINER_DIR/projector-user
 cp static/idea.sh.patch $TO_CONTAINER_DIR
 cp static/index.html.patch $TO_CONTAINER_DIR
 cp static/nginx.conf.patch $TO_CONTAINER_DIR

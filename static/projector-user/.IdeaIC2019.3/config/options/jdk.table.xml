@@ -1,0 +1,93 @@
+<application>
+    <component name="ProjectJdkTable">
+        <jdk version="2">
+            <name value="11"/>
+            <type value="JavaSDK"/>
+            <version value="java version &quot;11.0.5&quot;"/>
+            <homePath value="$APPLICATION_HOME_DIR$/jbr"/>
+            <roots>
+                <annotationsPath>
+                    <root type="composite">
+                        <root url="jar://$APPLICATION_HOME_DIR$/plugins/java/lib/jdkAnnotations.jar!/" type="simple"/>
+                    </root>
+                </annotationsPath>
+                <classPath>
+                    <root type="composite">
+                        <root url="jrt:///projector/idea/jbr!/java.base" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/java.compiler" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/java.datatransfer" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/java.desktop" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/java.instrument" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/java.logging" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/java.management" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/java.management.rmi" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/java.naming" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/java.net.http" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/java.prefs" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/java.rmi" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/java.scripting" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/java.se" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/java.security.jgss" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/java.security.sasl" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/java.smartcardio" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/java.sql" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/java.sql.rowset" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/java.transaction.xa" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/java.xml" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/java.xml.crypto" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/javafx.base" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/javafx.controls" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/javafx.fxml" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/javafx.graphics" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/javafx.media" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/javafx.swing" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/javafx.web" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.accessibility" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.aot" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.attach" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.charsets" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.compiler" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.crypto.cryptoki" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.crypto.ec" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.dynalink" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.hotspot.agent" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.httpserver" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.internal.ed" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.internal.jvmstat" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.internal.le" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.internal.vm.ci" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.internal.vm.compiler" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.internal.vm.compiler.management" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.jdi" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.jdwp.agent" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.jfr" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.jsobject" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.localedata" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.management" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.management.agent" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.management.jfr" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.naming.dns" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.naming.rmi" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.net" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.pack" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.scripting.nashorn" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.scripting.nashorn.shell" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.sctp" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.security.auth" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.security.jgss" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.unsupported" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.xml.dom" type="simple"/>
+                        <root url="jrt:///projector/idea/jbr!/jdk.zipfs" type="simple"/>
+                    </root>
+                </classPath>
+                <javadocPath>
+                    <root type="composite"/>
+                </javadocPath>
+                <sourcePath>
+                    <root type="composite"/>
+                </sourcePath>
+            </roots>
+            <additional/>
+        </jdk>
+    </component>
+</application>

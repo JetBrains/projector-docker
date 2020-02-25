@@ -62,7 +62,9 @@ RUN true \
     && patch /etc/nginx/conf.d/default.conf < $PROJECTOR_DIR/site.conf.patch \
     && rm $PROJECTOR_DIR/site.conf.patch \
     && touch /var/run/nginx.pid \
+    && mv $PROJECTOR_DIR/projector-user /home \
     && useradd -m -d /home/projector-user -s /bin/bash projector-user \
+    && chown -R projector-user.projector-user /home/projector-user \
     && chown -R projector-user.projector-user $PROJECTOR_DIR \
     && chown -R projector-user.projector-user /usr/share/nginx \
     && chown -R projector-user.projector-user /var/cache/nginx \

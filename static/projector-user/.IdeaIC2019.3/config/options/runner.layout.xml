@@ -1,0 +1,13 @@
+<application>
+    <component name="RunnerLayoutSettings">
+        <runner id="JavaRunner">
+            <ViewImpl>
+                <option name="ID" value="ConsoleContent"/>
+                <option name="placeInGrid" value="bottom"/>
+            </ViewImpl>
+            <TabImpl>
+                <option name="bottomProportion" value="0.0"/>
+            </TabImpl>
+        </runner>
+    </component>
+</application>

@@ -1,0 +1,5 @@
+<application>
+    <component name="UISettings">
+        <option name="smoothScrolling" value="false"/>
+    </component>
+</application>
