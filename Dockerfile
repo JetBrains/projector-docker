@@ -34,6 +34,8 @@ FROM nginx
 ENV PROJECTOR_DIR /projector
 COPY --from=projectorStaticFiles $PROJECTOR_DIR $PROJECTOR_DIR
 
+ENV PROJECTOR_USER_NAME projector-user
+
 RUN true \
 # Any command which returns non-zero exit code will cause this shell script to exit immediately:
     && set -e \
@@ -63,14 +65,14 @@ RUN true \
     && patch /etc/nginx/conf.d/default.conf < $PROJECTOR_DIR/site.conf.patch \
     && rm $PROJECTOR_DIR/site.conf.patch \
     && touch /var/run/nginx.pid \
-    && mv $PROJECTOR_DIR/projector-user /home \
-    && useradd -m -d /home/projector-user -s /bin/bash projector-user \
-    && chown -R projector-user.projector-user /home/projector-user \
-    && chown -R projector-user.projector-user $PROJECTOR_DIR \
-    && chown -R projector-user.projector-user /usr/share/nginx \
-    && chown -R projector-user.projector-user /var/cache/nginx \
-    && chown -R projector-user.projector-user /var/run/nginx.pid \
-    && chown projector-user.projector-user run.sh
+    && mv $PROJECTOR_DIR/$PROJECTOR_USER_NAME /home \
+    && useradd -m -d /home/$PROJECTOR_USER_NAME -s /bin/bash $PROJECTOR_USER_NAME \
+    && chown -R $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME /home/$PROJECTOR_USER_NAME \
+    && chown -R $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME $PROJECTOR_DIR \
+    && chown -R $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME /usr/share/nginx \
+    && chown -R $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME /var/cache/nginx \
+    && chown -R $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME /var/run/nginx.pid \
+    && chown $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME run.sh
 
-USER projector-user
-ENV HOME /home/projector-user
+USER $PROJECTOR_USER_NAME
+ENV HOME /home/$PROJECTOR_USER_NAME
