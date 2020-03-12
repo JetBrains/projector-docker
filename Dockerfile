@@ -18,9 +18,6 @@ ENV PROJECTOR_DIR /projector
 RUN mkdir -p $PROJECTOR_DIR
 # copy projector files to the container:
 COPY to-container $PROJECTOR_DIR
-# prepare index.html (TODO: this won't be needed after Kotlin/JS 1.3.70):
-RUN patch $PROJECTOR_DIR/index.html < $PROJECTOR_DIR/index.html.patch
-RUN rm $PROJECTOR_DIR/index.html.patch
 # copy idea:
 COPY --from=ideaDownloader /idea $PROJECTOR_DIR/idea
 # prepare idea - apply projector-server:
@@ -45,12 +42,8 @@ RUN true \
     && mv $PROJECTOR_DIR/run.sh run.sh \
 # prepare nginx:
     && mkdir -p /usr/share/nginx/html/projector \
-    && mv $PROJECTOR_DIR/kotlin.js /usr/share/nginx/html/projector/ \
-    && mv $PROJECTOR_DIR/kotlinx-serialization-kotlinx-serialization-runtime.js /usr/share/nginx/html/projector/ \
-    && mv $PROJECTOR_DIR/projector-client-web.js /usr/share/nginx/html/projector/ \
-    && mv $PROJECTOR_DIR/projector-common.js /usr/share/nginx/html/projector/ \
-    && mv $PROJECTOR_DIR/index.html /usr/share/nginx/html/projector/ \
-    && mv $PROJECTOR_DIR/pj.png /usr/share/nginx/html/projector/ \
+    && mv $PROJECTOR_DIR/distributions/* /usr/share/nginx/html/projector/ \
+    && rm -rf $PROJECTOR_DIR/distributions \
 # install packages:
     && apt-get update \
     && apt-get install libxext6 libxrender1 libxtst6 libxi6 libfreetype6 -y \
