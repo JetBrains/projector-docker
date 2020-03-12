@@ -1,5 +1,6 @@
 /.idea/
 /idea*
 /projector-core
+/projector-core-copy
 /to-container
 projector-image.tar.gz

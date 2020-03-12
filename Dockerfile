@@ -8,6 +8,18 @@ ENV IDEA_ARCHIVE_NAME ideaIC-2019.3.3.tar.gz
 RUN wget -q https://download.jetbrains.com/idea/$IDEA_ARCHIVE_NAME -O - | tar -xz
 RUN find . -maxdepth 1 -type d -name "idea-*" -execdir mv {} /idea \;
 
+FROM amazoncorretto:11 as projectorGradleBuilder
+
+# copy projector-core:
+ENV PROJECTOR_DIR /projector
+ADD projector-core-copy $PROJECTOR_DIR/projector-core
+# build projector-core:
+WORKDIR $PROJECTOR_DIR/projector-core
+RUN ./gradlew clean
+RUN ./gradlew :projector-client-web:browserProductionWebpack
+RUN rm projector-client-web/build/distributions/projector-client-web.js.map
+RUN ./gradlew :projector-server:jar
+
 FROM debian AS projectorStaticFiles
 
 # prepare tools:
@@ -17,9 +29,12 @@ RUN apt-get install patch -y
 ENV PROJECTOR_DIR /projector
 RUN mkdir -p $PROJECTOR_DIR
 # copy projector files to the container:
-COPY to-container $PROJECTOR_DIR
+ADD static $PROJECTOR_DIR
 # copy idea:
 COPY --from=ideaDownloader /idea $PROJECTOR_DIR/idea
+# copy projector:
+COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-core/projector-client-web/build/distributions $PROJECTOR_DIR/distributions
+COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-core/projector-server/build/libs/projector-server-1.0-SNAPSHOT.jar $PROJECTOR_DIR
 # prepare idea - apply projector-server:
 RUN mv $PROJECTOR_DIR/projector-server-1.0-SNAPSHOT.jar $PROJECTOR_DIR/idea
 RUN patch $PROJECTOR_DIR/idea/bin/idea.sh < $PROJECTOR_DIR/idea.sh.patch

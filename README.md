@@ -4,7 +4,7 @@ Some scripts to create and run a Docker container with projector and IDEA.
 ## TL;DR
 If you've just cloned the `projector-docker` repo, you probably should make the following actions:
 1. `clone-projector-core.sh`.
-1. `build-container.sh` (the script assumes the JAVA_HOME is set to a JDK 11).
+1. `build-container.sh`.
 1. `run-container.sh`.
 
 If you've received a `tar.gz` Docker image, you probably should run the following ones:
@@ -29,7 +29,7 @@ ln -s YOUR_REAL_PATH_TO_PROJECTOR_CORE PATH_TO_PROJECTOR_DOCKER/projector-core
 ```
 
 ### `build-container.sh`
-Compiles projector and builds a Docker container locally.
+Builds a Docker container locally.
 
 ### `create-image.sh`
 Creates a Docker image from a built container and saves it as a `tar.gz` archive.
