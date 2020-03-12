@@ -42,6 +42,20 @@ RUN rm $PROJECTOR_DIR/idea.sh.patch
 
 FROM nginx
 
+RUN true \
+# Any command which returns non-zero exit code will cause this shell script to exit immediately:
+   && set -e \
+# Activate debugging to show execution details: all commands will be printed before execution
+   && set -x \
+# install packages:
+    && apt-get update \
+    && apt-get install libxext6 libxrender1 libxtst6 libxi6 libfreetype6 -y \
+    && apt-get install patch -y \
+    && apt-get install git -y \
+# clean apt to reduce image size:
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /var/cache/apt
+
 # copy the Projector dir:
 ENV PROJECTOR_DIR /projector
 COPY --from=projectorStaticFiles $PROJECTOR_DIR $PROJECTOR_DIR
@@ -59,14 +73,6 @@ RUN true \
     && mkdir -p /usr/share/nginx/html/projector \
     && mv $PROJECTOR_DIR/distributions/* /usr/share/nginx/html/projector/ \
     && rm -rf $PROJECTOR_DIR/distributions \
-# install packages:
-    && apt-get update \
-    && apt-get install libxext6 libxrender1 libxtst6 libxi6 libfreetype6 -y \
-    && apt-get install patch -y \
-    && apt-get install git -y \
-# clean apt to reduce image size:
-    && rm -rf /var/lib/apt/lists/* \
-    && rm -rf /var/cache/apt \
 # change user to non-root (http://pjdietz.com/2016/08/28/nginx-in-docker-without-root.html):
     && patch /etc/nginx/nginx.conf < $PROJECTOR_DIR/nginx.conf.patch \
     && rm $PROJECTOR_DIR/nginx.conf.patch \
