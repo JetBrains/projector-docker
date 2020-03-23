@@ -52,6 +52,7 @@ RUN true \
     && apt-get install libxext6 libxrender1 libxtst6 libxi6 libfreetype6 -y \
     && apt-get install patch -y \
     && apt-get install git -y \
+    && apt-get install procps -y \
 # clean apt to reduce image size:
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/cache/apt
