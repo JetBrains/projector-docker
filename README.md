@@ -45,4 +45,6 @@ Starts the server on 8887.
 ### `run-container-mounted.sh`
 Runs the Docker container. Also, it mounts your `~/IdeaProjects` dir to the container, so you can open your projects. Feel free to change `~/IdeaProjects` dir to your desired one. Please note that the projects are visible from Docker, but permissions can forbid to compile them by default. Maybe permissions can be changed to allow that.
 
+**For Mac and Windows hosts**: to speed up work with mounted dirs, you can try adding the `:cached` suffix. It will look like this: `-v /Users/<USER>/<PATH>:<DOCKER_PATH>:cached`.
+
 Starts the server on 8887.
