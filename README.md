@@ -31,6 +31,9 @@ ln -s YOUR_REAL_PATH_TO_PROJECTOR_CORE PATH_TO_PROJECTOR_DOCKER/projector-core
 ### `build-container.sh`
 Builds a Docker container locally.
 
+### `build-container-dev.sh`
+Compiles and builds a Docker container locally. The script assumes the JAVA_HOME is set to a JDK 11.
+
 ### `create-image.sh`
 Creates a Docker image from a built container and saves it as a `tar.gz` archive.
 
