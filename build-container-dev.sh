@@ -8,6 +8,7 @@ cd projector-core
 
 ./gradlew :projector-client-web:browserProductionWebpack
 ./gradlew :projector-server:jar
+./gradlew :projector-plugin-markdown:buildPlugin
 
 cd -
 

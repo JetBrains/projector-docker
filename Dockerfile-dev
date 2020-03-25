@@ -31,10 +31,16 @@ COPY --from=ideaDownloader /idea $PROJECTOR_DIR/idea
 # copy projector:
 COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-core/projector-client-web/build/distributions $PROJECTOR_DIR/distributions
 COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-core/projector-server/build/libs/projector-server-1.0-SNAPSHOT.jar $PROJECTOR_DIR
+COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-core/projector-plugin-markdown/build/distributions/projector-plugin-markdown-1.0-SNAPSHOT.zip $PROJECTOR_DIR
 # prepare idea - apply projector-server:
 RUN mv $PROJECTOR_DIR/projector-server-1.0-SNAPSHOT.jar $PROJECTOR_DIR/idea
 RUN patch $PROJECTOR_DIR/idea/bin/idea.sh < $PROJECTOR_DIR/idea.sh.patch
 RUN rm $PROJECTOR_DIR/idea.sh.patch
+# put markdown plugin to a proper dir:
+RUN unzip $PROJECTOR_DIR/projector-plugin-markdown-1.0-SNAPSHOT.zip
+RUN rm $PROJECTOR_DIR/projector-plugin-markdown-1.0-SNAPSHOT.zip
+RUN mkdir $PROJECTOR_DIR/projector-user/.IdeaIC2019.3/config/plugins
+RUN mv projector-plugin-markdown $PROJECTOR_DIR/projector-user/.IdeaIC2019.3/config/plugins/projector-plugin-markdown
 
 FROM nginx
 
