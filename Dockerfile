@@ -15,16 +15,18 @@ ENV PROJECTOR_DIR /projector
 ADD projector-core-copy $PROJECTOR_DIR/projector-core
 # build projector-core:
 WORKDIR $PROJECTOR_DIR/projector-core
-RUN ./gradlew clean
-RUN ./gradlew :projector-client-web:browserProductionWebpack
+ARG buildGradle
+RUN if [ "$buildGradle" = "true" ]; then ./gradlew clean; else echo "Skipping gradle build"; fi
+RUN if [ "$buildGradle" = "true" ]; then ./gradlew :projector-client-web:browserProductionWebpack; else echo "Skipping gradle build"; fi
 RUN rm projector-client-web/build/distributions/projector-client-web.js.map
-RUN ./gradlew :projector-server:jar
+RUN if [ "$buildGradle" = "true" ]; then ./gradlew :projector-server:jar; else echo "Skipping gradle build"; fi
+RUN if [ "$buildGradle" = "true" ]; then ./gradlew :projector-plugin-markdown:buildPlugin; else echo "Skipping gradle build"; fi
 
 FROM debian AS projectorStaticFiles
 
 # prepare tools:
 RUN apt-get update
-RUN apt-get install patch -y
+RUN apt-get install patch unzip -y
 # create the Projector dir:
 ENV PROJECTOR_DIR /projector
 RUN mkdir -p $PROJECTOR_DIR
@@ -35,10 +37,16 @@ COPY --from=ideaDownloader /idea $PROJECTOR_DIR/idea
 # copy projector:
 COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-core/projector-client-web/build/distributions $PROJECTOR_DIR/distributions
 COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-core/projector-server/build/libs/projector-server-1.0-SNAPSHOT.jar $PROJECTOR_DIR
+COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-core/projector-plugin-markdown/build/distributions/projector-plugin-markdown-1.0-SNAPSHOT.zip $PROJECTOR_DIR
 # prepare idea - apply projector-server:
 RUN mv $PROJECTOR_DIR/projector-server-1.0-SNAPSHOT.jar $PROJECTOR_DIR/idea
 RUN patch $PROJECTOR_DIR/idea/bin/idea.sh < $PROJECTOR_DIR/idea.sh.patch
 RUN rm $PROJECTOR_DIR/idea.sh.patch
+# put markdown plugin to a proper dir:
+RUN unzip $PROJECTOR_DIR/projector-plugin-markdown-1.0-SNAPSHOT.zip
+RUN rm $PROJECTOR_DIR/projector-plugin-markdown-1.0-SNAPSHOT.zip
+RUN mkdir $PROJECTOR_DIR/projector-user/.IdeaIC2019.3/config/plugins
+RUN mv projector-plugin-markdown $PROJECTOR_DIR/projector-user/.IdeaIC2019.3/config/plugins/projector-plugin-markdown
 
 FROM nginx
 

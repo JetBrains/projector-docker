@@ -19,4 +19,4 @@ mkdir $PROJECTOR_CORE_COPY
 cp -r projector-core/* $PROJECTOR_CORE_COPY
 
 # build container:
-sudo docker build -f Dockerfile-dev -t projector-image .
+sudo docker build -t projector-image --build-arg buildGradle=false .
