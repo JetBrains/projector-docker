@@ -30,10 +30,10 @@ RUN apt-get install unzip -y
 # create the Projector dir:
 ENV PROJECTOR_DIR /projector
 RUN mkdir -p $PROJECTOR_DIR
-# copy projector files to the container:
-ADD static $PROJECTOR_DIR
 # copy idea:
 COPY --from=ideaDownloader /idea $PROJECTOR_DIR/idea
+# copy projector files to the container:
+ADD static $PROJECTOR_DIR
 # copy projector:
 COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-core/projector-client-web/build/distributions $PROJECTOR_DIR/distributions
 COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-core/projector-server/build/libs/projector-server-1.0-SNAPSHOT.jar $PROJECTOR_DIR
