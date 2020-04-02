@@ -26,7 +26,7 @@ FROM debian AS projectorStaticFiles
 
 # prepare tools:
 RUN apt-get update
-RUN apt-get install patch unzip -y
+RUN apt-get install unzip -y
 # create the Projector dir:
 ENV PROJECTOR_DIR /projector
 RUN mkdir -p $PROJECTOR_DIR
@@ -40,8 +40,7 @@ COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-core/projector-serve
 COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-core/projector-plugin-markdown/build/distributions/projector-plugin-markdown-1.0-SNAPSHOT.zip $PROJECTOR_DIR
 # prepare idea - apply projector-server:
 RUN mv $PROJECTOR_DIR/projector-server-1.0-SNAPSHOT.jar $PROJECTOR_DIR/idea
-RUN patch $PROJECTOR_DIR/idea/bin/idea.sh < $PROJECTOR_DIR/idea.sh.patch
-RUN rm $PROJECTOR_DIR/idea.sh.patch
+RUN mv $PROJECTOR_DIR/idea-projector-launcher.sh $PROJECTOR_DIR/idea/bin
 # put markdown plugin to a proper dir:
 RUN unzip $PROJECTOR_DIR/projector-plugin-markdown-1.0-SNAPSHOT.zip
 RUN rm $PROJECTOR_DIR/projector-plugin-markdown-1.0-SNAPSHOT.zip
@@ -98,6 +97,7 @@ RUN true \
     && chown -R $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME /usr/share/nginx \
     && chown -R $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME /var/cache/nginx \
     && chown -R $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME /var/run/nginx.pid \
+    && chown -R $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME $PROJECTOR_DIR/idea/bin \
     && chown $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME run.sh
 
 USER $PROJECTOR_USER_NAME
