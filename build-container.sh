@@ -10,4 +10,4 @@ mkdir $PROJECTOR_CORE_COPY
 cp -r projector-core/* $PROJECTOR_CORE_COPY
 
 # build container:
-sudo docker build -t projector-image --build-arg buildGradle=true .
+docker build -t projector-image --build-arg buildGradle=true .
