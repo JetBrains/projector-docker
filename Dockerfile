@@ -40,7 +40,7 @@ COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-core/projector-serve
 COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-core/projector-plugin-markdown/build/distributions/projector-plugin-markdown-1.0-SNAPSHOT.zip $PROJECTOR_DIR
 # prepare idea - apply projector-server:
 RUN mv $PROJECTOR_DIR/projector-server-1.0-SNAPSHOT.jar $PROJECTOR_DIR/idea
-RUN mv $PROJECTOR_DIR/idea-projector-launcher.sh $PROJECTOR_DIR/idea/bin
+RUN mv $PROJECTOR_DIR/ide-projector-launcher.sh $PROJECTOR_DIR/idea/bin
 # put markdown plugin to a proper dir:
 RUN unzip $PROJECTOR_DIR/projector-plugin-markdown-1.0-SNAPSHOT.zip
 RUN rm $PROJECTOR_DIR/projector-plugin-markdown-1.0-SNAPSHOT.zip

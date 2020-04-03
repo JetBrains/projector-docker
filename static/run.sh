@@ -5,4 +5,4 @@ set -x # Activate debugging to show execution details: all commands will be prin
 
 cd /projector/idea/bin
 
-./idea-projector-launcher.sh
+./ide-projector-launcher.sh
