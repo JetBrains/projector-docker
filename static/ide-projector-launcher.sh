@@ -4,7 +4,7 @@
 
 THIS_FILE_NAME=$(basename "$0")
 
-ideRunnerCandidates=($(grep -lir --include=*.sh com.intellij.idea.Main .))
+ideRunnerCandidates=($(grep -lr --include=*.sh com.intellij.idea.Main .))
 
 # remove this file from candidates:
 for i in "${!ideRunnerCandidates[@]}"; do
