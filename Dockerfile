@@ -42,11 +42,10 @@ COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-core/projector-plugi
 # prepare ide - apply projector-server:
 RUN mv $PROJECTOR_DIR/projector-server-1.0-SNAPSHOT.jar $PROJECTOR_DIR/ide
 RUN mv $PROJECTOR_DIR/ide-projector-launcher.sh $PROJECTOR_DIR/ide/bin
-# put markdown plugin to a proper dir:
+# unzip markdown plugin:
 RUN unzip $PROJECTOR_DIR/projector-plugin-markdown-1.0-SNAPSHOT.zip
 RUN rm $PROJECTOR_DIR/projector-plugin-markdown-1.0-SNAPSHOT.zip
-RUN mkdir $PROJECTOR_DIR/projector-user/.IdeaIC2019.3/config/plugins
-RUN mv projector-plugin-markdown $PROJECTOR_DIR/projector-user/.IdeaIC2019.3/config/plugins/projector-plugin-markdown
+RUN mv projector-plugin-markdown $PROJECTOR_DIR/projector-plugin-markdown
 
 FROM nginx
 
