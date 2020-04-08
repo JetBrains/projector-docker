@@ -2,14 +2,18 @@
 Some scripts to create and run a Docker container with projector and IDEA.
 
 ## TL;DR
-If you've just cloned the `projector-docker` repo, you probably should make the following actions:
-1. `clone-projector-core.sh`.
-1. `build-container.sh`.
-1. `run-container.sh`.
+If you've just **cloned** the `projector-docker` repo, you probably should make the following actions:
+```shell script
+./clone-projector-core.sh
+./build-container.sh
+./run-container.sh
+```
 
-If you've received a `tar.gz` Docker image, you probably should run the following ones:
-1. `load-image.sh`.
-1. `run-container.sh`.
+If you've **received** a `tar.gz` Docker image, you probably should run the following ones:
+```shell script
+./load-image.sh
+./run-container.sh
+```
 
 Both instructions will run **nginx** and **projector with IDEA** locally.
 
