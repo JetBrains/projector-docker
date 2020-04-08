@@ -16,7 +16,7 @@ for i in "${!ideRunnerCandidates[@]}"; do
 done
 
 if [[ ${#ideRunnerCandidates[@]} != 1 ]]; then
-    echo "Ca't find a single candidate to be IDE runner script so can't select a single one:"
+    echo "Can't find a single candidate to be IDE runner script so can't select a single one:"
     echo ${ideRunnerCandidates[*]}
     exit 1
 fi
