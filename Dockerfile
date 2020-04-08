@@ -3,10 +3,11 @@ FROM debian AS ideaDownloader
 # prepare tools:
 RUN apt-get update
 RUN apt-get install wget -y
-# download idea to the idea/ dir:
+# download idea to the /ide dir:
+WORKDIR /download
 ENV IDEA_ARCHIVE_NAME ideaIC-2019.3.4.tar.gz
 RUN wget -q https://download.jetbrains.com/idea/$IDEA_ARCHIVE_NAME -O - | tar -xz
-RUN find . -maxdepth 1 -type d -name "idea-*" -execdir mv {} /idea \;
+RUN find . -maxdepth 1 -type d -name * -execdir mv {} /ide \;
 
 FROM amazoncorretto:11 as projectorGradleBuilder
 
@@ -31,16 +32,16 @@ RUN apt-get install unzip -y
 ENV PROJECTOR_DIR /projector
 RUN mkdir -p $PROJECTOR_DIR
 # copy idea:
-COPY --from=ideaDownloader /idea $PROJECTOR_DIR/idea
+COPY --from=ideaDownloader /ide $PROJECTOR_DIR/ide
 # copy projector files to the container:
 ADD static $PROJECTOR_DIR
 # copy projector:
 COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-core/projector-client-web/build/distributions $PROJECTOR_DIR/distributions
 COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-core/projector-server/build/libs/projector-server-1.0-SNAPSHOT.jar $PROJECTOR_DIR
 COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-core/projector-plugin-markdown/build/distributions/projector-plugin-markdown-1.0-SNAPSHOT.zip $PROJECTOR_DIR
-# prepare idea - apply projector-server:
-RUN mv $PROJECTOR_DIR/projector-server-1.0-SNAPSHOT.jar $PROJECTOR_DIR/idea
-RUN mv $PROJECTOR_DIR/ide-projector-launcher.sh $PROJECTOR_DIR/idea/bin
+# prepare ide - apply projector-server:
+RUN mv $PROJECTOR_DIR/projector-server-1.0-SNAPSHOT.jar $PROJECTOR_DIR/ide
+RUN mv $PROJECTOR_DIR/ide-projector-launcher.sh $PROJECTOR_DIR/ide/bin
 # put markdown plugin to a proper dir:
 RUN unzip $PROJECTOR_DIR/projector-plugin-markdown-1.0-SNAPSHOT.zip
 RUN rm $PROJECTOR_DIR/projector-plugin-markdown-1.0-SNAPSHOT.zip
@@ -97,7 +98,7 @@ RUN true \
     && chown -R $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME /usr/share/nginx \
     && chown -R $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME /var/cache/nginx \
     && chown -R $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME /var/run/nginx.pid \
-    && chown -R $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME $PROJECTOR_DIR/idea/bin \
+    && chown -R $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME $PROJECTOR_DIR/ide/bin \
     && chown $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME run.sh
 
 USER $PROJECTOR_USER_NAME
