@@ -68,6 +68,20 @@ RUN true \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/cache/apt
 
+ARG downloadUrl
+
+RUN true \
+# Any command which returns non-zero exit code will cause this shell script to exit immediately:
+    && set -e \
+# Activate debugging to show execution details: all commands will be printed before execution
+    && set -x \
+# install cpecific packages for IDEs:
+    && apt-get update \
+    && if [ "${downloadUrl#*CLion}" != "$downloadUrl" ]; then apt-get install build-essential clang -y; else echo "Not CLion"; fi \
+# clean apt to reduce image size:
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /var/cache/apt
+
 # copy the Projector dir:
 ENV PROJECTOR_DIR /projector
 COPY --from=projectorStaticFiles $PROJECTOR_DIR $PROJECTOR_DIR
