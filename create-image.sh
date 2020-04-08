@@ -3,4 +3,7 @@
 set -e # Any command which returns non-zero exit code will cause this shell script to exit immediately
 set -x # Activate debugging to show execution details: all commands will be printed before execution
 
-docker save projector-image | gzip > projector-image.tar.gz
+containerName=${1:-projector-idea-c}
+tarGzFileName=${2:-projector-idea-c.tar.gz}
+
+docker save "$containerName" | gzip > "$tarGzFileName"

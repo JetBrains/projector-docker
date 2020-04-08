@@ -1,12 +1,12 @@
-FROM debian AS ideaDownloader
+FROM debian AS ideDownloader
 
 # prepare tools:
 RUN apt-get update
 RUN apt-get install wget -y
-# download idea to the /ide dir:
+# download IDE to the /ide dir:
 WORKDIR /download
-ENV IDEA_ARCHIVE_NAME ideaIC-2019.3.4.tar.gz
-RUN wget -q https://download.jetbrains.com/idea/$IDEA_ARCHIVE_NAME -O - | tar -xz
+ARG downloadUrl
+RUN wget -q $downloadUrl -O - | tar -xz
 RUN find . -maxdepth 1 -type d -name * -execdir mv {} /ide \;
 
 FROM amazoncorretto:11 as projectorGradleBuilder
@@ -31,15 +31,15 @@ RUN apt-get install unzip -y
 # create the Projector dir:
 ENV PROJECTOR_DIR /projector
 RUN mkdir -p $PROJECTOR_DIR
-# copy idea:
-COPY --from=ideaDownloader /ide $PROJECTOR_DIR/ide
+# copy IDE:
+COPY --from=ideDownloader /ide $PROJECTOR_DIR/ide
 # copy projector files to the container:
 ADD static $PROJECTOR_DIR
 # copy projector:
 COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-core/projector-client-web/build/distributions $PROJECTOR_DIR/distributions
 COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-core/projector-server/build/libs/projector-server-1.0-SNAPSHOT.jar $PROJECTOR_DIR
 COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-core/projector-plugin-markdown/build/distributions/projector-plugin-markdown-1.0-SNAPSHOT.zip $PROJECTOR_DIR
-# prepare ide - apply projector-server:
+# prepare IDE - apply projector-server:
 RUN mv $PROJECTOR_DIR/projector-server-1.0-SNAPSHOT.jar $PROJECTOR_DIR/ide
 RUN mv $PROJECTOR_DIR/ide-projector-launcher.sh $PROJECTOR_DIR/ide/bin
 # unzip markdown plugin:

@@ -9,5 +9,8 @@ rm -rf $PROJECTOR_CORE_COPY
 mkdir $PROJECTOR_CORE_COPY
 cp -r projector-core/* $PROJECTOR_CORE_COPY
 
+containerName=${1:-projector-idea-c}
+downloadUrl=${2:-https://download.jetbrains.com/idea/ideaIC-2019.3.4.tar.gz}
+
 # build container:
-docker build -t projector-image --build-arg buildGradle=true .
+docker build -t "$containerName" --build-arg buildGradle=true --build-arg "downloadUrl=$downloadUrl" .

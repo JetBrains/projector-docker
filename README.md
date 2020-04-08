@@ -5,14 +5,14 @@ Some scripts to create and run a Docker container with projector and IDEA.
 If you've just **cloned** the `projector-docker` repo, you probably should make the following actions:
 ```shell script
 ./clone-projector-core.sh
-./build-container.sh
-./run-container.sh
+./build-container.sh [containerName] [ideDownloadUrl]
+./run-container.sh [containerName]
 ```
 
 If you've **received** a `tar.gz` Docker image, you probably should run the following ones:
 ```shell script
-./load-image.sh
-./run-container.sh
+./load-image.sh [tarGzFileName]
+./run-container.sh [containerName]
 ```
 
 Both instructions will run **nginx** and **projector with IDEA** locally.
@@ -32,24 +32,24 @@ Clones projector from Git.
 ln -s YOUR_REAL_PATH_TO_PROJECTOR_CORE PATH_TO_PROJECTOR_DOCKER/projector-core
 ```
 
-### `build-container.sh`
+### `build-container.sh [containerName] [ideDownloadUrl]`
 Builds a Docker container locally.
 
-### `build-container-dev.sh`
+### `build-container-dev.sh [containerName] [ideDownloadUrl]`
 Compiles and builds a Docker container locally. The script assumes the JAVA_HOME is set to a JDK 11.
 
-### `create-image.sh`
+### `create-image.sh [containerName] [tarGzFileName]`
 Creates a Docker image from a built container and saves it as a `tar.gz` archive.
 
-### `load-image.sh`
+### `load-image.sh [tarGzFileName]`
 Loads the Docker image locally.
 
-### `run-container.sh`
+### `run-container.sh [containerName]`
 Runs the Docker container.
 
 Starts the server on 8887.
 
-### `run-container-mounted.sh`
+### `run-container-mounted.sh [containerName]`
 Runs the Docker container. Also, it mounts your `~/projector-docker` dir as the home dir in the container, so settings and projects can be saved between launches.
 
 Feel free to change `~/projector-docker` dir to your desired one. **Please note that the host dir should be created manually** to eliminate permissions problems.
