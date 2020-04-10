@@ -1,5 +1,5 @@
 # projector-docker
-Some scripts to create and run a Docker container with projector and IDEA.
+Some scripts to create and run a Docker container with projector and IDE.
 
 ## TL;DR
 If you've just **cloned** the `projector-docker` repo, you probably should make the following actions:
@@ -15,13 +15,13 @@ If you've **received** a `tar.gz` Docker image, you probably should run the foll
 ./run-container.sh [containerName]
 ```
 
-Both instructions will run **nginx** and **projector with IDEA** locally.
+Both instructions will run **nginx** and **projector with IDE** locally.
 
-To access projector with IDEA, use <http://localhost:8080/projector/>.
+To access projector with IDE, use <http://localhost:8080/projector/>.
 
-## Accessing IDEA run on another machine
+## Accessing IDE run on another machine
 
-If you want to access IDEA run on another host, you need to change page parameters. Here are the default parameters, so you probably need to change `localhost` in both places to needed IP: <http://localhost:8080/projector/?host=localhost&port=8887>.
+If you want to access IDE run on another host, you need to change page parameters. Here are the default parameters, so you probably need to change `localhost` in both places to needed IP: <http://localhost:8080/projector/?host=localhost&port=8887>.
 
 ## Script list
 ### `clone-projector-core.sh`
