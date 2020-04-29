@@ -5,4 +5,4 @@ set -x # Activate debugging to show execution details: all commands will be prin
 
 tarGzFileName=${1:-projector-idea-c.tar.gz}
 
-docker load < "$tarGzFileName"
+docker load -i "$tarGzFileName"
