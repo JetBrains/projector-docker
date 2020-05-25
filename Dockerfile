@@ -11,9 +11,10 @@ RUN find . -maxdepth 1 -type d -name * -execdir mv {} /ide \;
 
 FROM amazoncorretto:11 as projectorGradleBuilder
 
-# copy projector-core:
+# copy projector-core and awt:
 ENV PROJECTOR_DIR /projector
-ADD projector-core-copy $PROJECTOR_DIR/projector-core
+ADD projector-awt $PROJECTOR_DIR/projector-awt
+ADD projector-core $PROJECTOR_DIR/projector-core
 # build projector-core:
 WORKDIR $PROJECTOR_DIR/projector-core
 ARG buildGradle
@@ -34,7 +35,7 @@ RUN mkdir -p $PROJECTOR_DIR
 # copy IDE:
 COPY --from=ideDownloader /ide $PROJECTOR_DIR/ide
 # copy projector files to the container:
-ADD static $PROJECTOR_DIR
+ADD projector-docker/static $PROJECTOR_DIR
 # copy projector:
 COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-core/projector-client-web/build/distributions $PROJECTOR_DIR/distributions
 COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-core/projector-server/build/libs/projector-server-1.0-SNAPSHOT.jar $PROJECTOR_DIR
