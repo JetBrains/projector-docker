@@ -16,4 +16,4 @@ containerName=${1:-projector-idea-c}
 downloadUrl=${2:-https://download.jetbrains.com/idea/ideaIC-2019.3.4.tar.gz}
 
 # build container:
-DOCKER_BUILDKIT=1 docker build -t "$containerName" --build-arg buildGradle=false --build-arg "downloadUrl=$downloadUrl" -f Dockerfile ..
+DOCKER_BUILDKIT=1 docker build --progress=plain -t "$containerName" --build-arg buildGradle=false --build-arg "downloadUrl=$downloadUrl" -f Dockerfile ..
