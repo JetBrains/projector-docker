@@ -21,7 +21,7 @@ ARG buildGradle
 RUN if [ "$buildGradle" = "true" ]; then ./gradlew clean; else echo "Skipping gradle build"; fi
 RUN if [ "$buildGradle" = "true" ]; then ./gradlew :projector-client-web:browserProductionWebpack; else echo "Skipping gradle build"; fi
 RUN rm projector-client-web/build/distributions/projector-client-web.js.map
-RUN if [ "$buildGradle" = "true" ]; then ./gradlew :projector-server:jar; else echo "Skipping gradle build"; fi
+RUN if [ "$buildGradle" = "true" ]; then ./gradlew :projector-server:distZip; else echo "Skipping gradle build"; fi
 RUN if [ "$buildGradle" = "true" ]; then ./gradlew :projector-plugin-markdown:buildPlugin; else echo "Skipping gradle build"; fi
 
 FROM debian AS projectorStaticFiles
@@ -38,10 +38,12 @@ COPY --from=ideDownloader /ide $PROJECTOR_DIR/ide
 ADD projector-docker/static $PROJECTOR_DIR
 # copy projector:
 COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-core/projector-client-web/build/distributions $PROJECTOR_DIR/distributions
-COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-core/projector-server/build/libs/projector-server-1.0-SNAPSHOT.jar $PROJECTOR_DIR
+COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-core/projector-server/build/distributions/projector-server-1.0-SNAPSHOT.zip $PROJECTOR_DIR
 COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-core/projector-plugin-markdown/build/distributions/projector-plugin-markdown-1.0-SNAPSHOT.zip $PROJECTOR_DIR
 # prepare IDE - apply projector-server:
-RUN mv $PROJECTOR_DIR/projector-server-1.0-SNAPSHOT.jar $PROJECTOR_DIR/ide
+RUN unzip $PROJECTOR_DIR/projector-server-1.0-SNAPSHOT.zip
+RUN rm $PROJECTOR_DIR/projector-server-1.0-SNAPSHOT.zip
+RUN mv projector-server-1.0-SNAPSHOT $PROJECTOR_DIR/ide/projector-server
 RUN mv $PROJECTOR_DIR/ide-projector-launcher.sh $PROJECTOR_DIR/ide/bin
 # unzip markdown plugin:
 RUN unzip $PROJECTOR_DIR/projector-plugin-markdown-1.0-SNAPSHOT.zip

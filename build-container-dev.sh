@@ -7,7 +7,7 @@ set -x # Activate debugging to show execution details: all commands will be prin
 cd ../projector-core
 
 ./gradlew :projector-client-web:browserProductionWebpack
-./gradlew :projector-server:jar
+./gradlew :projector-server:distZip
 ./gradlew :projector-plugin-markdown:buildPlugin
 
 cd -
