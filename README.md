@@ -25,11 +25,11 @@ If you want to access IDE run on another host, you need to change page parameter
 
 ## Script list
 ### `clone-projector-core.sh`
-Clones projector from Git.
+Clones projector from Git to a proper location: `../projector-core`.
 
-**Note**: you can omit this cloning by creating a symlink to your existing `projector-core`:
+**Note**: if you already have `projector-core` locally existing, you can place it to a proper location or make a symlink:
 ```shell script
-ln -s YOUR_REAL_PATH_TO_PROJECTOR_CORE PATH_TO_PROJECTOR_DOCKER/projector-core
+ln -s YOUR_REAL_PATH_TO_PROJECTOR_CORE ../projector-core
 ```
 
 ### `build-container.sh [containerName] [ideDownloadUrl]`
