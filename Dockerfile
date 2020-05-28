@@ -11,9 +11,8 @@ RUN find . -maxdepth 1 -type d -name * -execdir mv {} /ide \;
 
 FROM amazoncorretto:11 as projectorGradleBuilder
 
-# copy projector-core and awt:
+# copy projector-core:
 ENV PROJECTOR_DIR /projector
-ADD projector-awt $PROJECTOR_DIR/projector-awt
 ADD projector-core $PROJECTOR_DIR/projector-core
 # build projector-core:
 WORKDIR $PROJECTOR_DIR/projector-core
