@@ -4,12 +4,16 @@ set -e # Any command which returns non-zero exit code will cause this shell scri
 set -x # Activate debugging to show execution details: all commands will be printed before execution
 
 
-cd ../projector-core
-
+cd ../projector-client
 ./gradlew :projector-client-web:browserProductionWebpack
-./gradlew :projector-server:distZip
-./gradlew :projector-plugin-markdown:buildPlugin
+cd -
 
+cd ../projector-markdown-plugin
+./gradlew :buildPlugin
+cd -
+
+cd ../projector-server
+./gradlew :projector-server:distZip
 cd -
 
 containerName=${1:-projector-idea-c}

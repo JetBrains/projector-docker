@@ -37,8 +37,8 @@ sed -i 's+classpath "$CLASSPATH"+classpath "$CLASSPATH:$IDE_HOME/projector-serve
 # change
 # com.intellij.idea.Main
 # to
-# -Dcom.intellij.projector.server.classToLaunch=com.intellij.idea.Main com.intellij.projector.server.ProjectorLauncher
-sed -i 's+com.intellij.idea.Main+-Dcom.intellij.projector.server.classToLaunch=com.intellij.idea.Main com.intellij.projector.server.ProjectorLauncher+g' "$IDE_RUN_FILE_NAME-projector.sh"
+# -Dorg.jetbrains.projector.server.classToLaunch=com.intellij.idea.Main org.jetbrains.projector.server.ProjectorLauncher
+sed -i 's+com.intellij.idea.Main+-Dorg.jetbrains.projector.server.classToLaunch=com.intellij.idea.Main org.jetbrains.projector.server.ProjectorLauncher+g' "$IDE_RUN_FILE_NAME-projector.sh"
 
 bash "$IDE_RUN_FILE_NAME-projector.sh"
 

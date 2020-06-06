@@ -11,17 +11,28 @@ RUN find . -maxdepth 1 -type d -name * -execdir mv {} /ide \;
 
 FROM amazoncorretto:11 as projectorGradleBuilder
 
-# copy projector-core:
 ENV PROJECTOR_DIR /projector
-ADD projector-core $PROJECTOR_DIR/projector-core
-# build projector-core:
-WORKDIR $PROJECTOR_DIR/projector-core
+
+# projector-client:
+ADD projector-client $PROJECTOR_DIR/projector-client
+WORKDIR $PROJECTOR_DIR/projector-client
 ARG buildGradle
 RUN if [ "$buildGradle" = "true" ]; then ./gradlew clean; else echo "Skipping gradle build"; fi
 RUN if [ "$buildGradle" = "true" ]; then ./gradlew :projector-client-web:browserProductionWebpack; else echo "Skipping gradle build"; fi
-RUN rm projector-client-web/build/distributions/projector-client-web.js.map
+
+# projector-markdown-plugin:
+ADD projector-markdown-plugin $PROJECTOR_DIR/projector-markdown-plugin
+WORKDIR $PROJECTOR_DIR/projector-markdown-plugin
+ARG buildGradle
+RUN if [ "$buildGradle" = "true" ]; then ./gradlew clean; else echo "Skipping gradle build"; fi
+RUN if [ "$buildGradle" = "true" ]; then ./gradlew buildPlugin; else echo "Skipping gradle build"; fi
+
+# projector-server:
+ADD projector-server $PROJECTOR_DIR/projector-server
+WORKDIR $PROJECTOR_DIR/projector-server
+ARG buildGradle
+RUN if [ "$buildGradle" = "true" ]; then ./gradlew clean; else echo "Skipping gradle build"; fi
 RUN if [ "$buildGradle" = "true" ]; then ./gradlew :projector-server:distZip; else echo "Skipping gradle build"; fi
-RUN if [ "$buildGradle" = "true" ]; then ./gradlew :projector-plugin-markdown:buildPlugin; else echo "Skipping gradle build"; fi
 
 FROM debian AS projectorStaticFiles
 
@@ -36,18 +47,18 @@ COPY --from=ideDownloader /ide $PROJECTOR_DIR/ide
 # copy projector files to the container:
 ADD projector-docker/static $PROJECTOR_DIR
 # copy projector:
-COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-core/projector-client-web/build/distributions $PROJECTOR_DIR/distributions
-COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-core/projector-server/build/distributions/projector-server-1.0-SNAPSHOT.zip $PROJECTOR_DIR
-COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-core/projector-plugin-markdown/build/distributions/projector-plugin-markdown-1.0-SNAPSHOT.zip $PROJECTOR_DIR
+COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-client/projector-client-web/build/distributions $PROJECTOR_DIR/distributions
+COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-server/projector-server/build/distributions/projector-server-1.0-SNAPSHOT.zip $PROJECTOR_DIR
+COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-markdown-plugin/build/distributions/projector-markdown-plugin-1.0-SNAPSHOT.zip $PROJECTOR_DIR
 # prepare IDE - apply projector-server:
 RUN unzip $PROJECTOR_DIR/projector-server-1.0-SNAPSHOT.zip
 RUN rm $PROJECTOR_DIR/projector-server-1.0-SNAPSHOT.zip
 RUN mv projector-server-1.0-SNAPSHOT $PROJECTOR_DIR/ide/projector-server
 RUN mv $PROJECTOR_DIR/ide-projector-launcher.sh $PROJECTOR_DIR/ide/bin
 # unzip markdown plugin:
-RUN unzip $PROJECTOR_DIR/projector-plugin-markdown-1.0-SNAPSHOT.zip
-RUN rm $PROJECTOR_DIR/projector-plugin-markdown-1.0-SNAPSHOT.zip
-RUN mv projector-plugin-markdown $PROJECTOR_DIR/projector-plugin-markdown
+RUN unzip $PROJECTOR_DIR/projector-markdown-plugin-1.0-SNAPSHOT.zip
+RUN rm $PROJECTOR_DIR/projector-markdown-plugin-1.0-SNAPSHOT.zip
+RUN mv projector-markdown-plugin $PROJECTOR_DIR/projector-markdown-plugin
 
 FROM nginx
 

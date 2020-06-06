@@ -2,5 +2,7 @@
 
 **
 
-!/projector-core/**
+!/projector-client/**
+!/projector-markdown-plugin/**
+!/projector-server/**
 !/projector-docker/static/**
