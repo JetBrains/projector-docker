@@ -1,2 +1,4 @@
-/.idea/
+!.idea/
+.idea/*
+!.idea/copyright
 /idea*
