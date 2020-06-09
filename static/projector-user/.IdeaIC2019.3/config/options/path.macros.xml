@@ -18,7 +18,7 @@
   -->
 <application>
     <component name="PathMacrosImpl">
-        <macro name="KOTLIN_BUNDLED" value="/projector/idea/plugins/Kotlin/kotlinc"/>
+        <macro name="KOTLIN_BUNDLED" value="/projector/ide/plugins/Kotlin/kotlinc"/>
         <macro name="MAVEN_REPOSITORY" value="/home/projector-user/.m2/repository"/>
     </component>
 </application>
