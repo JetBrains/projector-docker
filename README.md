@@ -62,6 +62,21 @@ Feel free to change `~/projector-docker` dir to your desired one. **Please note 
 
 Starts the server on port 8887.
 
+## Tested IDEs
+When you build a container, there is an optional `ideDownloadUrl` parameter, so you can select different IDEs to use. Most JetBrains IDEs of versions 2019.1-2019.3 will work. Tested with:
+- https://download.jetbrains.com/idea/ideaIC-2019.3.4.tar.gz
+- https://download.jetbrains.com/idea/ideaIU-2019.3.4.tar.gz
+- https://download.jetbrains.com/cpp/CLion-2019.3.5.tar.gz
+- https://download.jetbrains.com/go/goland-2019.3.4.tar.gz
+- https://download.jetbrains.com/datagrip/datagrip-2019.3.4.tar.gz
+- https://download.jetbrains.com/webide/PhpStorm-2019.3.4.tar.gz
+- https://download.jetbrains.com/python/pycharm-community-2019.3.4.tar.gz
+- https://download.jetbrains.com/python/pycharm-professional-2019.3.4.tar.gz
+
+If you want to try other distribution, click "Other versions" on an [IDE download page](https://www.jetbrains.com/idea/download/) and copy a link to a `tar.gz` file. Please ensure that you select `tar.gz` **with JBR**, not without.
+
+There is an issue with IDEs of version 2020.1: you can't run them if you do a fresh start of an IDE. However, if you manage to place config dir to a correct place so IDE opens a project at start, there is no error. We have a ticket [PRJ-78](https://youtrack.jetbrains.com/issue/PRJ-78) for fixing launching of 2020.1.
+
 ## FAQ
 **Q**: Can I somehow **secure** my **connection**?  
 **A**: You can enable SSL for connection. First of all, provide the `ORG_JETBRAINS_PROJECTOR_SERVER_SSL_PROPERTIES_PATH` environment variable on the server-side using the `-e` parameter of `docker run`. It should contain a path to a file with properties: you can place the file to a mounted dir. Example of such a file:
