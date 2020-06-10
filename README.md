@@ -63,8 +63,9 @@ Feel free to change `~/projector-docker` dir to your desired one. **Please note 
 Starts the server on port 8887.
 
 ## Tested IDEs
-When you build a container, there is an optional `ideDownloadUrl` parameter, so you can select different IDEs to use. Most JetBrains IDEs of versions 2019.1-2019.3 will work. Tested with:
+When you build a container, there is an optional `ideDownloadUrl` parameter, so you can select different IDEs to use. Most JetBrains IDEs of versions 2019.1-2019.3 will work. Also, 2020.2 EAP works. Tested with:
 - https://download.jetbrains.com/idea/ideaIC-2019.3.4.tar.gz
+- https://download.jetbrains.com/idea/ideaIC-202.5103.13.tar.gz
 - https://download.jetbrains.com/idea/ideaIU-2019.3.4.tar.gz
 - https://download.jetbrains.com/cpp/CLion-2019.3.5.tar.gz
 - https://download.jetbrains.com/go/goland-2019.3.4.tar.gz
