@@ -63,8 +63,9 @@ Feel free to change `~/projector-docker` dir to your desired one. **Please note 
 Starts the server on port 8887.
 
 ## Tested IDEs
-When you build a container, there is an optional `ideDownloadUrl` parameter, so you can select different IDEs to use. Most JetBrains IDEs of versions 2019.1-2019.3 will work. Also, 2020.2 EAP works. Tested with:
+When you build a container, there is an optional `ideDownloadUrl` parameter, so you can select different IDEs to use. Most JetBrains IDEs of versions 2019.1-2020.2 will work. Tested with:
 - https://download.jetbrains.com/idea/ideaIC-2019.3.4.tar.gz
+- https://download.jetbrains.com/idea/ideaIC-2020.1.1.tar.gz
 - https://download.jetbrains.com/idea/ideaIC-202.5103.13.tar.gz
 - https://download.jetbrains.com/idea/ideaIU-2019.3.4.tar.gz
 - https://download.jetbrains.com/cpp/CLion-2019.3.5.tar.gz
@@ -75,8 +76,6 @@ When you build a container, there is an optional `ideDownloadUrl` parameter, so 
 - https://download.jetbrains.com/python/pycharm-professional-2019.3.4.tar.gz
 
 If you want to try other distribution, click "Other versions" on an [IDE download page](https://www.jetbrains.com/idea/download/) and copy a link to a `tar.gz` file. Please ensure that you select `tar.gz` **with JBR**, not without.
-
-There is an issue with IDEs of version 2020.1: you can't run them if you do a fresh start of an IDE. However, if you manage to place config dir to a correct place so IDE opens a project at start, there is no error. We have a ticket [PRJ-78](https://youtrack.jetbrains.com/issue/PRJ-78) for fixing launching of 2020.1.
 
 ## FAQ
 **Q**: Can I somehow **secure** my **connection**?  
