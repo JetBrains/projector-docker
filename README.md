@@ -92,7 +92,8 @@ If you do everything right, the server launch log will contain something like `W
 After that, enable it on the client-side by adding the `wss` query parameter like this: <http://localhost:8080/projector/?wss>. Make sure that your browser trusts the certificate you use.
 
 **Q**: Can I assign a **connection password**?  
-**A**: Yes, you can set a password that will be validated on connection start on the server. On the server-side, provide the `ORG_JETBRAINS_PROJECTOR_SERVER_HANDSHAKE_TOKEN` environment variable containing the password. On the client-side, you can specify the password in query parameters like this: <http://localhost:8080/projector/?token=mySecretPassword>.
+**A**: Yes, you can set a password that will be validated on connection start on the server. There are two variants of access: **full** (read/write) when you can control UI via mouse and keyboard and **read-only** when you can only watch.  
+On the server-side, provide the `ORG_JETBRAINS_PROJECTOR_SERVER_HANDSHAKE_TOKEN` environment variable containing the password for full access and the `ORG_JETBRAINS_PROJECTOR_SERVER_RO_HANDSHAKE_TOKEN` environment variable for read-only access. On the client-side, you can specify the password in query parameters like this: <http://localhost:8080/projector/?token=mySecretPassword>. If you don't set passwords, by default they are equal to `null`. If rw and ro passwords are the same, the server gives full access to clients with a correct password.
 
 **Q**: I’ve mounted the home dir in **Docker** container and it seems that I **can’t edit files**, there are exceptions about permissions and missing files. What to do?  
 **A**: It can happen when the owner of the directory on the host is root. So you should recreate the directory on the host yourself with normal user permissions.
