@@ -1,7 +1,7 @@
 # projector-docker
 [![JetBrains incubator project](https://jb.gg/badges/incubator.svg)](https://confluence.jetbrains.com/display/ALL/JetBrains+on+GitHub)
 
-Some scripts to create and run a Docker container with projector and IDE.
+Some scripts to create and run a Docker container with Projector and IDE.
 
 For more info, please check out [Projector.md](https://github.com/JetBrains/projector-server/blob/master/docs/Projector.md).
 
@@ -21,7 +21,7 @@ To access Projector Server with IDE, use <http://localhost:8080/projector/>.
 
 There will be a sample Kotlin + Java project opened, just close some dialogs. If you want to try **your project**, you can clone it via Git.
 
-If you don't want to clone the project every time you start the container, go further: use [`run-container-mounted.sh`](#run-container-mountedsh-containername).
+If you **don't want to clone the project every time** you start the container, go further: use [`run-container-mounted.sh`](#run-container-mountedsh-containername).
 
 ## Accessing IDE run on another machine
 
