@@ -8,6 +8,8 @@ For more info, please check out [Projector.md](https://github.com/JetBrains/proj
 ## Run IntelliJ IDEA in Docker
 How to run IntelliJ IDEA Community in Docker and access it via a web browser?
 
+Please check your **Docker version**: since we use [Docker BuildKit](https://docs.docker.com/develop/develop-images/build_enhancements/) in our scripts, a current version of Docker (18.09 or higher) is required.
+
 Clone this `projector-docker` repo and make the following actions:
 ```shell script
 ./clone-projector-core.sh
