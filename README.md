@@ -101,4 +101,4 @@ On the server-side, provide the `ORG_JETBRAINS_PROJECTOR_SERVER_HANDSHAKE_TOKEN`
 **A**: It can happen when the owner of the directory on the host is root. So you should recreate the directory on the host yourself with normal user permissions.
 
 ## License
-[GPLv2](LICENSE.txt).
+[Apache 2.0](LICENSE.txt).
