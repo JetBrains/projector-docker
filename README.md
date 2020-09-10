@@ -38,13 +38,13 @@ Clones projector projects from Git to proper locations:
 
 **Note**: if you already have these projects locally existing, you can place them to proper locations and avoid this script.
 
-### `build-container.sh [containerName] [ideDownloadUrl]`
-Builds a Docker container locally.
+### `build-container.sh [containerName [ideDownloadUrl]]`
+Compiles Projector inside Docker and builds a Docker container locally.
 
-### `build-container-dev.sh [containerName] [ideDownloadUrl]`
-Compiles and builds a Docker container locally. The script assumes the JAVA_HOME is set to a JDK 11.
+### `build-container-dev.sh [containerName [ideDownloadUrl]]`
+Compiles Projector outside Docker and builds a Docker container locally. The script assumes the JAVA_HOME is set to a JDK 11.
 
-### `create-image.sh [containerName] [tarGzFileName]`
+### `create-image.sh [containerName [tarGzFileName]]`
 Creates a Docker image from a built container and saves it as a `tar.gz` archive.
 
 ### `load-image.sh [tarGzFileName]`
@@ -53,7 +53,7 @@ Loads the Docker image locally.
 ### `run-container.sh [containerName]`
 Runs the Docker container.
 
-Starts the server on port 8887.
+Starts the Projector server on port 8887, hosts client files on port 8080.
 
 ### `run-container-mounted.sh [containerName]`
 Runs the Docker container. Also, it mounts your `~/projector-docker` dir as the home dir in the container, so settings and projects can be saved between launches.
@@ -62,7 +62,7 @@ Feel free to change `~/projector-docker` dir to your desired one. **Please note 
 
 **For Mac and Windows hosts**: to speed up work with mounted dirs, you can try adding the `:cached` suffix. It will look like this: `-v ~/projector-docker:/home/projector-user:cached`.
 
-Starts the server on port 8887.
+Starts the Projector server on port 8887, hosts client files on port 8080.
 
 ## Tested IDEs
 When you build a container, there is an optional `ideDownloadUrl` parameter, so you can select different IDEs to use. Most JetBrains IDEs of versions 2019.1-2020.2 will work. Tested with:
@@ -76,6 +76,8 @@ When you build a container, there is an optional `ideDownloadUrl` parameter, so 
 - https://download.jetbrains.com/webide/PhpStorm-2019.3.4.tar.gz
 - https://download.jetbrains.com/python/pycharm-community-2019.3.4.tar.gz
 - https://download.jetbrains.com/python/pycharm-professional-2019.3.4.tar.gz
+
+You can find the up-to-date list of tested IDEs here: <https://github.com/JetBrains/projector-installer/blob/master/projector_installer/compatible_ide.json>.
 
 If you want to try other distribution, click "Other versions" on an [IDE download page](https://www.jetbrains.com/idea/download/) and copy a link to a `tar.gz` file. Please ensure that you select `tar.gz` **with JBR**, not without.
 
