@@ -76,6 +76,7 @@ When you build a container, there is an optional `ideDownloadUrl` parameter, so 
 - https://download.jetbrains.com/webide/PhpStorm-2019.3.4.tar.gz
 - https://download.jetbrains.com/python/pycharm-community-2019.3.4.tar.gz
 - https://download.jetbrains.com/python/pycharm-professional-2019.3.4.tar.gz
+- https://download.jetbrains.com/webstorm/WebStorm-2020.2.2.tar.gz
 
 You can find the up-to-date list of tested IDEs here: <https://github.com/JetBrains/projector-installer/blob/master/projector_installer/compatible_ide.json>.
 
