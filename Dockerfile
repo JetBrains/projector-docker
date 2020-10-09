@@ -29,13 +29,6 @@ FROM amazoncorretto:11 as projectorGradleBuilder
 
 ENV PROJECTOR_DIR /projector
 
-# projector-client:
-ADD projector-client $PROJECTOR_DIR/projector-client
-WORKDIR $PROJECTOR_DIR/projector-client
-ARG buildGradle
-RUN if [ "$buildGradle" = "true" ]; then ./gradlew clean; else echo "Skipping gradle build"; fi
-RUN if [ "$buildGradle" = "true" ]; then ./gradlew :projector-client-web:browserProductionWebpack; else echo "Skipping gradle build"; fi
-
 # projector-markdown-plugin:
 ADD projector-markdown-plugin $PROJECTOR_DIR/projector-markdown-plugin
 WORKDIR $PROJECTOR_DIR/projector-markdown-plugin
@@ -63,7 +56,6 @@ COPY --from=ideDownloader /ide $PROJECTOR_DIR/ide
 # copy projector files to the container:
 ADD projector-docker/static $PROJECTOR_DIR
 # copy projector:
-COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-client/projector-client-web/build/distributions $PROJECTOR_DIR/distributions
 COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-server/projector-server/build/distributions/projector-server-1.0-SNAPSHOT.zip $PROJECTOR_DIR
 COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-markdown-plugin/build/distributions/projector-markdown-plugin-1.0-SNAPSHOT.zip $PROJECTOR_DIR
 # prepare IDE - apply projector-server:
@@ -76,7 +68,7 @@ RUN unzip $PROJECTOR_DIR/projector-markdown-plugin-1.0-SNAPSHOT.zip
 RUN rm $PROJECTOR_DIR/projector-markdown-plugin-1.0-SNAPSHOT.zip
 RUN mv projector-markdown-plugin $PROJECTOR_DIR/projector-markdown-plugin
 
-FROM nginx
+FROM debian
 
 RUN true \
 # Any command which returns non-zero exit code will cause this shell script to exit immediately:
@@ -87,8 +79,6 @@ RUN true \
     && apt-get update \
 # packages for awt:
     && apt-get install libxext6 libxrender1 libxtst6 libxi6 libfreetype6 -y \
-# packages for nginx configuration:
-    && apt-get install patch -y \
 # packages for user convenience:
     && apt-get install git -y \
 # packages for IDEA (to disable warnings):
@@ -125,22 +115,10 @@ RUN true \
     && set -x \
 # move run scipt:
     && mv $PROJECTOR_DIR/run.sh run.sh \
-# prepare nginx:
-    && mkdir -p /usr/share/nginx/html/projector \
-    && mv $PROJECTOR_DIR/distributions/* /usr/share/nginx/html/projector/ \
-    && rm -rf $PROJECTOR_DIR/distributions \
 # change user to non-root (http://pjdietz.com/2016/08/28/nginx-in-docker-without-root.html):
-    && patch /etc/nginx/nginx.conf < $PROJECTOR_DIR/nginx.conf.patch \
-    && rm $PROJECTOR_DIR/nginx.conf.patch \
-    && patch /etc/nginx/conf.d/default.conf < $PROJECTOR_DIR/site.conf.patch \
-    && rm $PROJECTOR_DIR/site.conf.patch \
-    && touch /var/run/nginx.pid \
     && mv $PROJECTOR_DIR/$PROJECTOR_USER_NAME /home \
     && useradd -m -d /home/$PROJECTOR_USER_NAME -s /bin/bash $PROJECTOR_USER_NAME \
     && chown -R $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME /home/$PROJECTOR_USER_NAME \
-    && chown -R $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME /usr/share/nginx \
-    && chown -R $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME /var/cache/nginx \
-    && chown -R $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME /var/run/nginx.pid \
     && chown -R $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME $PROJECTOR_DIR/ide/bin \
     && chown $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME run.sh
 
