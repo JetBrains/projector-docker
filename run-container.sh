@@ -21,4 +21,4 @@ set -x # Activate debugging to show execution details: all commands will be prin
 
 containerName=${1:-projector-idea-c}
 
-docker run --rm -p 8080:8080 -p 8887:8887 -it "$containerName" bash -c "./run.sh"
+docker run --rm -p 8887:8887 -it "$containerName" bash -c "./run.sh"
