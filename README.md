@@ -32,7 +32,6 @@ If you want to access IDE run on another host, you need to change page parameter
 ## Script list
 ### `clone-projector-core.sh`
 Clones projector projects from Git to proper locations:
-- `../projector-markdown-plugin`.
 - `../projector-server`.
 
 **Note**: if you already have these projects locally existing, you can place them to proper locations and avoid this script.

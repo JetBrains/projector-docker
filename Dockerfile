@@ -29,13 +29,6 @@ FROM amazoncorretto:11 as projectorGradleBuilder
 
 ENV PROJECTOR_DIR /projector
 
-# projector-markdown-plugin:
-ADD projector-markdown-plugin $PROJECTOR_DIR/projector-markdown-plugin
-WORKDIR $PROJECTOR_DIR/projector-markdown-plugin
-ARG buildGradle
-RUN if [ "$buildGradle" = "true" ]; then ./gradlew clean; else echo "Skipping gradle build"; fi
-RUN if [ "$buildGradle" = "true" ]; then ./gradlew buildPlugin; else echo "Skipping gradle build"; fi
-
 # projector-server:
 ADD projector-server $PROJECTOR_DIR/projector-server
 WORKDIR $PROJECTOR_DIR/projector-server
@@ -57,16 +50,11 @@ COPY --from=ideDownloader /ide $PROJECTOR_DIR/ide
 ADD projector-docker/static $PROJECTOR_DIR
 # copy projector:
 COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-server/projector-server/build/distributions/projector-server-1.0-SNAPSHOT.zip $PROJECTOR_DIR
-COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-markdown-plugin/build/distributions/projector-markdown-plugin-1.0-SNAPSHOT.zip $PROJECTOR_DIR
 # prepare IDE - apply projector-server:
 RUN unzip $PROJECTOR_DIR/projector-server-1.0-SNAPSHOT.zip
 RUN rm $PROJECTOR_DIR/projector-server-1.0-SNAPSHOT.zip
 RUN mv projector-server-1.0-SNAPSHOT $PROJECTOR_DIR/ide/projector-server
 RUN mv $PROJECTOR_DIR/ide-projector-launcher.sh $PROJECTOR_DIR/ide/bin
-# unzip markdown plugin:
-RUN unzip $PROJECTOR_DIR/projector-markdown-plugin-1.0-SNAPSHOT.zip
-RUN rm $PROJECTOR_DIR/projector-markdown-plugin-1.0-SNAPSHOT.zip
-RUN mv projector-markdown-plugin $PROJECTOR_DIR/projector-markdown-plugin
 
 FROM debian:10
 
