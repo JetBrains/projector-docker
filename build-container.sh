@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #
 # Copyright 2019-2020 JetBrains s.r.o.
@@ -19,8 +19,37 @@
 set -e # Any command which returns non-zero exit code will cause this shell script to exit immediately
 set -x # Activate debugging to show execution details: all commands will be printed before execution
 
-containerName=${1:-projector-idea-c}
-downloadUrl=${2:-https://download.jetbrains.com/idea/ideaIC-2019.3.5.tar.gz}
+CONTAINER_NAME=projector-idea-c
+DOWNLOAD_URL=https://download.jetbrains.com/idea/ideaIC-2019.3.5.tar.gz
+
+checkargs () {
+    if [[ "$OPTARG" =~ ^-[u/n/h]$ ]]; then
+        echo "Unknow argument $OPTARG for option $opt"
+        exit 1
+    fi
+}
+
+print_usage() {
+    echo "Projector builder. Usage:
+    pass '-n' option to set container name ($CONTAINER_NAME by default)
+    pass '-u' option to set download url   ($DOWNLOAD_URL by default)
+"
+}
+
+while getopts "n:u:h" opt; do
+    case $opt in
+        n) checkargs
+            CONTAINER_NAME="$OPTARG";;
+        u) checkargs
+            DOWNLOAD_URL="$OPTARG";;
+        h) print_usage
+            exit 0
+            ;;
+        *) echo "Unsupported argument. Please, call with '-h' to see usage info"
+            exit 1
+            ;;
+    esac
+done
 
 # build container:
-DOCKER_BUILDKIT=1 docker build --progress=plain -t "$containerName" --build-arg buildGradle=true --build-arg "downloadUrl=$downloadUrl" -f Dockerfile ..
+DOCKER_BUILDKIT=1 docker build --progress=plain -t "$CONTAINER_NAME" --build-arg buildGradle=true --build-arg "downloadUrl=$DOWNLOAD_URL" -f Dockerfile ..
