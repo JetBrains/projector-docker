@@ -3,7 +3,8 @@
 
 Some scripts to create and run a Docker container with Projector and IDE.
 
-For more info, please check out [Projector.md](https://jetbrains.github.io/projector-client/mkdocs/latest/).
+[Documentation](https://jetbrains.github.io/projector-client/mkdocs/latest/)
+| [Issue tracker](https://youtrack.jetbrains.com/issues/PRJ)
 
 ## Run IntelliJ IDEA in Docker
 How to run IntelliJ IDEA Community in Docker and access it via a web browser?
