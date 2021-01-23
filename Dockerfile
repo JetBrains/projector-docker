@@ -55,6 +55,7 @@ RUN unzip $PROJECTOR_DIR/projector-server-1.0-SNAPSHOT.zip
 RUN rm $PROJECTOR_DIR/projector-server-1.0-SNAPSHOT.zip
 RUN mv projector-server-1.0-SNAPSHOT $PROJECTOR_DIR/ide/projector-server
 RUN mv $PROJECTOR_DIR/ide-projector-launcher.sh $PROJECTOR_DIR/ide/bin
+RUN chmod 644 $PROJECTOR_DIR/ide/projector-server/lib/*
 
 FROM debian:10
 
