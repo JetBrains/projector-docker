@@ -1,17 +1,53 @@
 # projector-docker
+
 [![JetBrains incubator project](https://jb.gg/badges/incubator.svg)](https://confluence.jetbrains.com/display/ALL/JetBrains+on+GitHub)
 
-Some scripts to create and run a Docker container with Projector and IDE.
+Some scripts to create and run a Docker container with Projector and JetBrains IDE.
 
 [Documentation](https://jetbrains.github.io/projector-client/mkdocs/latest/)
 | [Issue tracker](https://youtrack.jetbrains.com/issues/PRJ)
 
-## Run IntelliJ IDEA in Docker
-How to run IntelliJ IDEA Community in Docker and access it via a web browser?
+## Run JetBrains IDE in Docker
 
-Please check your **Docker version**: since we use [Docker BuildKit](https://docs.docker.com/develop/develop-images/build_enhancements/) in our scripts, a current version of Docker (18.09 or higher) is required.
+How to run JetBrains IDE in Docker and access it via a web browser?
+
+Firstly, pull an image with needed IDE:
+
+```shell
+docker pull registry.jetbrains.team/p/prj/containers/projector-clion
+docker pull registry.jetbrains.team/p/prj/containers/projector-datagrip
+docker pull registry.jetbrains.team/p/prj/containers/projector-goland
+docker pull registry.jetbrains.team/p/prj/containers/projector-idea-c
+docker pull registry.jetbrains.team/p/prj/containers/projector-idea-u
+docker pull registry.jetbrains.team/p/prj/containers/projector-phpstorm
+docker pull registry.jetbrains.team/p/prj/containers/projector-pycharm-c
+docker pull registry.jetbrains.team/p/prj/containers/projector-pycharm-p
+```
+
+After that, you can run it via the following command (just replace `IMAGE_NAME` with the needed name, for
+example, `registry.jetbrains.team/p/prj/containers/projector-clion`):
+
+```shell
+docker run --rm -p 8887:8887 -it IMAGE_NAME bash -c "./run.sh"
+```
+
+This will run **Projector Server with the selected JetBrains IDE** locally.
+
+To access Projector Server with IDE, use <http://localhost:8887/>.
+
+If you want to **save the state of the container between launches**, go further: take a look
+at [`run-container-mounted.sh`](#run-container-mountedsh-containername) script.
+
+## Run IntelliJ IDEA in Docker (building image yourself)
+
+If you don't want to pull an image, you can build it yourself. Scripts in this repo will help you to do it.
+
+Firstly, please check your **Docker version**: since we
+use [Docker BuildKit](https://docs.docker.com/develop/develop-images/build_enhancements/) in our scripts, a current
+version of Docker (18.09 or higher) is required.
 
 Clone this `projector-docker` repo and make the following actions:
+
 ```shell script
 ./clone-projector-core.sh
 ./build-container.sh
@@ -78,9 +114,13 @@ When you build a container, there is an optional `ideDownloadUrl` parameter, so 
 - https://download.jetbrains.com/webstorm/WebStorm-2020.2.2.tar.gz
 - https://download.jetbrains.com/rider/JetBrains.Rider-2020.2.4.tar.gz
 
-You can find the up-to-date list of tested IDEs here: <https://github.com/JetBrains/projector-installer/blob/master/projector_installer/compatible_ide.json>.
+You can find the up-to-date list of tested IDEs
+here: [compatible_ide.json](https://github.com/JetBrains/projector-installer/blob/master/projector_installer/compatible_ide.json)
+.
 
-If you want to try other distribution, click "Other versions" on an [IDE download page](https://www.jetbrains.com/idea/download/) and copy a link to a `tar.gz` file. Please ensure that you select `tar.gz` **with JBR**, not without.
+If you want to try other distribution, click "Other versions" on
+an [IDE download page](https://www.jetbrains.com/idea/download/) and copy a link to a `tar.gz` file. Please ensure that
+you select `tar.gz` **with JBR**, not without.
 
 ## FAQ
 **Q**: Can I somehow **secure** my **connection**?  
