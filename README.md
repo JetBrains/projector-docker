@@ -28,7 +28,7 @@ After that, you can run it via the following command (just replace `IMAGE_NAME` 
 example, `registry.jetbrains.team/p/prj/containers/projector-clion`):
 
 ```shell
-docker run --rm -p 8887:8887 -it IMAGE_NAME bash -c "./run.sh"
+docker run --rm -p 8887:8887 -it IMAGE_NAME
 ```
 
 This will run **Projector Server with the selected JetBrains IDE** locally.
