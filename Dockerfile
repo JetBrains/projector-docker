@@ -115,4 +115,4 @@ RUN true \
 USER $PROJECTOR_USER_NAME
 ENV HOME /home/$PROJECTOR_USER_NAME
 
-CMD ["bash", "-c", "./run.sh"]
+CMD ["bash", "-c", "/run.sh"]
