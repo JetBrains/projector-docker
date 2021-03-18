@@ -22,6 +22,7 @@ docker pull registry.jetbrains.team/p/prj/containers/projector-idea-u
 docker pull registry.jetbrains.team/p/prj/containers/projector-phpstorm
 docker pull registry.jetbrains.team/p/prj/containers/projector-pycharm-c
 docker pull registry.jetbrains.team/p/prj/containers/projector-pycharm-p
+docker pull registry.jetbrains.team/p/prj/containers/projector-webstorm
 ```
 
 After that, you can run it via the following command (just replace `IMAGE_NAME` with the needed name, for
