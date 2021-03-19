@@ -28,6 +28,8 @@ for i in "${!ideRunnerCandidates[@]}"; do
         unset 'ideRunnerCandidates[i]'
     elif [[ ${ideRunnerCandidates[i]} = *"projector"* ]]; then
         unset 'ideRunnerCandidates[i]'
+    elif [[ ${ideRunnerCandidates[i]} = *"game-tools.sh" ]]; then
+        unset 'ideRunnerCandidates[i]'
     fi
 done
 
