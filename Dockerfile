@@ -115,4 +115,6 @@ RUN true \
 USER $PROJECTOR_USER_NAME
 ENV HOME /home/$PROJECTOR_USER_NAME
 
+EXPOSE 8887
+
 CMD ["bash", "-c", "/run.sh"]
