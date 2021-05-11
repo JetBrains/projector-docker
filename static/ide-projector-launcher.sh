@@ -61,10 +61,9 @@ sed -i 's+com.intellij.idea.Main+-Dorg.jetbrains.projector.server.classToLaunch=
 # change
 # ${MAIN_CLASS}
 # to
-# -Dorg.jetbrains.projector.server.classToLaunch=jetbrains.mps.Launcher ${MAIN_CLASS}
+# -Dorg.jetbrains.projector.server.classToLaunch=${MAIN_CLASS} org.jetbrains.projector.server.ProjectorLauncher
 sed -i 's+\${MAIN_CLASS}+-Dorg.jetbrains.projector.server.classToLaunch=\${MAIN_CLASS} org.jetbrains.projector.server.ProjectorLauncher+g' "$IDE_RUN_FILE_NAME-projector.sh"
 
 bash "$IDE_RUN_FILE_NAME-projector.sh"
 
 rm "$IDE_RUN_FILE_NAME-projector.sh"
-
