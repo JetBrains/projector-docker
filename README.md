@@ -22,6 +22,8 @@ docker pull registry.jetbrains.team/p/prj/containers/projector-idea-u
 docker pull registry.jetbrains.team/p/prj/containers/projector-phpstorm
 docker pull registry.jetbrains.team/p/prj/containers/projector-pycharm-c
 docker pull registry.jetbrains.team/p/prj/containers/projector-pycharm-p
+docker pull registry.jetbrains.team/p/prj/containers/projector-rider
+docker pull registry.jetbrains.team/p/prj/containers/projector-rubymine
 docker pull registry.jetbrains.team/p/prj/containers/projector-webstorm
 ```
 
