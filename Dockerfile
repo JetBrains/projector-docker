@@ -35,6 +35,7 @@ WORKDIR $PROJECTOR_DIR/projector-server
 ARG buildGradle
 RUN if [ "$buildGradle" = "true" ]; then ./gradlew clean; else echo "Skipping gradle build"; fi
 RUN if [ "$buildGradle" = "true" ]; then ./gradlew :projector-server:distZip; else echo "Skipping gradle build"; fi
+RUN cd projector-server/build/distributions && find . -maxdepth 1 -type f -name projector-server-*.zip -exec mv {} projector-server.zip \;
 
 FROM debian AS projectorStaticFiles
 
@@ -49,11 +50,12 @@ COPY --from=ideDownloader /ide $PROJECTOR_DIR/ide
 # copy projector files to the container:
 ADD projector-docker/static $PROJECTOR_DIR
 # copy projector:
-COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-server/projector-server/build/distributions/projector-server-1.0-SNAPSHOT.zip $PROJECTOR_DIR
+COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-server/projector-server/build/distributions/projector-server.zip $PROJECTOR_DIR
 # prepare IDE - apply projector-server:
-RUN unzip $PROJECTOR_DIR/projector-server-1.0-SNAPSHOT.zip
-RUN rm $PROJECTOR_DIR/projector-server-1.0-SNAPSHOT.zip
-RUN mv projector-server-1.0-SNAPSHOT $PROJECTOR_DIR/ide/projector-server
+RUN unzip $PROJECTOR_DIR/projector-server.zip
+RUN rm $PROJECTOR_DIR/projector-server.zip
+RUN find . -maxdepth 1 -type d -name projector-server-* -exec mv {} projector-server \;
+RUN mv projector-server $PROJECTOR_DIR/ide/projector-server
 RUN mv $PROJECTOR_DIR/ide-projector-launcher.sh $PROJECTOR_DIR/ide/bin
 RUN chmod 644 $PROJECTOR_DIR/ide/projector-server/lib/*
 
