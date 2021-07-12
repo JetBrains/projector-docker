@@ -127,7 +127,7 @@ you select `tar.gz` **with JBR**, not without.
 
 ## FAQ
 
-**Q**: The set of available packages in the container doesn't suit me, what to do?
+**Q**: The set of available packages in the container doesn't suit me, what to do?  
 **A**: You can add the required packages to the [Dockerfile](Dockerfile) (for example, where `packages for user convenience` are installed) and build your own image. If you believe the packages are handy for most users and don't take much space, feel free to create a PR to this repo adding a package. Please note that we consider these buildscripts as samples, there is no goal to cover all the possible needs in them, but there is a goal to show how to create an image with Projector inside.
 
 **Q**: Can I somehow **secure** my **connection**?  
