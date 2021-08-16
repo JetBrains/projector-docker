@@ -13,27 +13,38 @@ jobs:
     strategy:
       matrix:
         include:
-          - imageName: projector-webstorm:latest
+          - imageName: projector-webstorm
+            tag: 2020.3.3
             downloadLink: https://download.jetbrains.com/webstorm/WebStorm-2020.3.3.tar.gz
-          - imageName: projector-idea-c:latest
+          - imageName: projector-idea-c
+            tag: 2020.3.4
             downloadLink: https://download.jetbrains.com/idea/ideaIC-2020.3.4.tar.gz
-          - imageName: projector-idea-u:latest
+          - imageName: projector-idea-u
+            tag: 2020.3.4
             downloadLink: https://download.jetbrains.com/idea/ideaIU-2020.3.4.tar.gz
-          - imageName: projector-clion:latest
+          - imageName: projector-clion
+            tag: 2020.3.4
             downloadLink: https://download.jetbrains.com/cpp/CLion-2020.3.4.tar.gz
-          - imageName: projector-goland:latest
+          - imageName: projector-goland
+            tag: 2020.3.5
             downloadLink: https://download.jetbrains.com/go/goland-2020.3.5.tar.gz
-          - imageName: projector-datagrip:latest
+          - imageName: projector-datagrip
+            tag: 2020.3.2
             downloadLink: https://download.jetbrains.com/datagrip/datagrip-2020.3.2.tar.gz
-          - imageName: projector-phpstorm:latest
+          - imageName: projector-phpstorm
+            tag: 2020.3.3
             downloadLink: https://download.jetbrains.com/webide/PhpStorm-2020.3.3.tar.gz
-          - imageName: projector-pycharm-c:latest
+          - imageName: projector-pycharm-c
+            tag: 2020.3.5
             downloadLink: https://download.jetbrains.com/python/pycharm-community-2020.3.5.tar.gz
-          - imageName: projector-pycharm-p:latest
+          - imageName: projector-pycharm-p
+            tag: 2020.3.5
             downloadLink: https://download.jetbrains.com/python/pycharm-professional-2020.3.5.tar.gz
-          - imageName: projector-rider:latest
+          - imageName: projector-rider
+            tag: 2020.3.4
             downloadLink: https://download.jetbrains.com/rider/JetBrains.Rider-2020.3.4.tar.gz
           - imageName: projector-rubymine
+            tag: 2020.3.4
             downloadLink: https://download.jetbrains.com/ruby/RubyMine-2020.3.4.tar.gz
 
     steps:
@@ -56,5 +67,10 @@ jobs:
 
       - run: |
           cd projector-docker
-          ./build-container.sh ${{ secrets.DOCKER_USERNAME }}/${{ matrix.imageName}} ${{ matrix.downloadLink }}
-          docker push ${{ secrets.DOCKER_USERNAME }}/${{ matrix.ImageName }}
+          ./build-container.sh ${{ secrets.DOCKER_USERNAME }}/${{ matrix.imageName}}:latest ${{ matrix.downloadLink }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/${{ matrix.ImageName }}:latest
+
+      - run: |
+          cd projector-docker
+          ./build-container.sh ${{ secrets.DOCKER_USERNAME }}/${{ matrix.imageName}}:${{ matrix.tag }} ${{ matrix.downloadLink }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/${{ matrix.ImageName }}:${{ matrix.tag }}
