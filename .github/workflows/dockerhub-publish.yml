@@ -72,5 +72,5 @@ jobs:
 
       - run: |
           cd projector-docker
-          ./build-container.sh ${{ secrets.DOCKER_USERNAME }}/${{ matrix.imageName}}:${{ matrix.tag }} ${{ matrix.downloadLink }}
+          docker tag ${{ secrets.DOCKER_USERNAME }}/${{ matrix.imageName}}:latest ${{ secrets.DOCKER_USERNAME }}/${{ matrix.imageName}}:${{ matrix.tag }}
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ matrix.ImageName }}:${{ matrix.tag }}
