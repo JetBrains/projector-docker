@@ -30,6 +30,8 @@ FROM amazoncorretto:11 as projectorGradleBuilder
 ENV PROJECTOR_DIR /projector
 
 # projector-server:
+RUN cd $PROJECTOR_DIR \
+    git clone https://github.com/JetBrains/projector-server.git
 ADD projector-server $PROJECTOR_DIR/projector-server
 WORKDIR $PROJECTOR_DIR/projector-server
 ARG buildGradle
