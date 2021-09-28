@@ -170,13 +170,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          path: projector-server
+          path: projector-docker
 
-      - name: Checkout docker repo
+      - name: Checkout server repo
         uses: actions/checkout@v2
         with:
-          repository: JetBrains/projector-docker
-          path: projector-docker
+          repository: JetBrains/projector-server
+          path: projector-server
 
       - name: Login to DockerHub
         uses: docker/login-action@v1
