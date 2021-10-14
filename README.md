@@ -11,7 +11,9 @@ Some scripts to create and run a Docker container with Projector and JetBrains I
 
 How to run JetBrains IDE in Docker and access it via a web browser?
 
-Firstly, pull an image with needed IDE:
+Firstly, pull an image with needed IDE 
+
+from Space:
 
 ```shell
 docker pull registry.jetbrains.team/p/prj/containers/projector-clion
@@ -26,6 +28,27 @@ docker pull registry.jetbrains.team/p/prj/containers/projector-rider
 docker pull registry.jetbrains.team/p/prj/containers/projector-rubymine
 docker pull registry.jetbrains.team/p/prj/containers/projector-webstorm
 ```
+
+on space published only latest tested browser and latest version of projector
+
+or from [DockerHub](https://hub.docker.com/orgs/jetbrains/repositories):
+
+```shell
+docker pull jetbrains/projector-webstorm:latest
+docker pull jetbrains/projector-rider:latest
+docker pull jetbrains/projector-rubymine:latest
+docker pull jetbrains/projector-pycharm-p:latest
+docker pull jetbrains/projector-pycharm-c:latest
+docker pull jetbrains/projector-phpstorm:latest
+docker pull jetbrains/projector-idea-u:latest
+docker pull jetbrains/projector-idea-c:latest
+docker pull jetbrains/projector-goland:latest
+docker pull jetbrains/projector-clion:latest
+docker pull jetbrains/projector-datagrip:latest
+```
+tags are distributed on DockerHub as follows:
+ - `:latest` is latest tested version of IDE and latest projector version;
+ - `:Y.M.P` Year Minor Patch version of IDE, like projector-webstorm:2020.3.3, and latest version of projector.
 
 After that, you can run it via the following command (just replace `IMAGE_NAME` with the needed name, for
 example, `registry.jetbrains.team/p/prj/containers/projector-clion`):
