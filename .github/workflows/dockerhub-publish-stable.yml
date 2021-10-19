@@ -1,0 +1,168 @@
+name: Docker Publish Stable
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    env:
+      PROJECTOR_STABLE: v1.4.0
+    strategy:
+      matrix:
+        include:
+          # Webstorm
+          - imageName: projector-webstorm
+            tag: 2020.2
+            downloadLink: https://download.jetbrains.com/webstorm/WebStorm-2020.2.4.tar.gz
+          - imageName: projector-webstorm
+            tag: 2020.3
+            downloadLink: https://download.jetbrains.com/webstorm/WebStorm-2020.3.3.tar.gz
+            isLatest: true
+
+          # Idea Community
+          - imageName: projector-idea-c
+            tag: 2019.3
+            downloadLink: https://download.jetbrains.com/idea/ideaIC-2019.3.5.tar.gz
+          - imageName: projector-idea-c
+            tag: 2020.1
+            downloadLink: https://download.jetbrains.com/idea/ideaIC-2020.1.4.tar.gz
+          - imageName: projector-idea-c
+            tag: 2020.2
+            downloadLink: https://download.jetbrains.com/idea/ideaIC-2020.2.4.tar.gz
+          - imageName: projector-idea-c
+            tag: 2020.3
+            downloadLink: https://download.jetbrains.com/idea/ideaIC-2020.3.4.tar.gz
+            isLatest: true
+
+          # Idea Ultimate
+          - imageName: projector-idea-u
+            tag: 2019.3
+            downloadLink: https://download.jetbrains.com/idea/ideaIU-2019.3.5.tar.gz
+          - imageName: projector-idea-u
+            tag: 2020.2
+            downloadLink: https://download.jetbrains.com/idea/ideaIU-2020.2.4.tar.gz
+          - imageName: projector-idea-u
+            tag: 2020.3
+            downloadLink: https://download.jetbrains.com/idea/ideaIU-2020.3.4.tar.gz
+            isLatest: true
+
+          # CLion
+          - imageName: projector-clion
+            tag: 2019.3
+            downloadLink: https://download.jetbrains.com/cpp/CLion-2019.3.6.tar.gz
+          - imageName: projector-clion
+            tag: 2020.2
+            downloadLink: https://download.jetbrains.com/cpp/CLion-2020.2.5.tar.gz
+          - imageName: projector-clion
+            tag: 2020.3
+            downloadLink: https://download.jetbrains.com/cpp/CLion-2020.3.4.tar.gz
+            isLatest: true
+
+          # Goland
+          - imageName: projector-goland
+            tag: 2019.3
+            downloadLink: https://download.jetbrains.com/go/goland-2019.3.4.tar.gz
+          - imageName: projector-goland
+            tag: 2020.2
+            downloadLink: https://download.jetbrains.com/go/goland-2020.2.4.tar.gz
+          - imageName: projector-goland
+            tag: 2020.3
+            downloadLink: https://download.jetbrains.com/go/goland-2020.3.5.tar.gz
+            isLatest: true
+
+          # Datagrip
+          - imageName: projector-datagrip
+            tag: 2019.3
+            downloadLink: https://download.jetbrains.com/datagrip/datagrip-2019.3.5.tar.gz
+          - imageName: projector-datagrip
+            tag: 2020.2
+            downloadLink: https://download.jetbrains.com/datagrip/datagrip-2020.2.3.tar.gz
+          - imageName: projector-datagrip
+            tag: 2020.3
+            downloadLink: https://download.jetbrains.com/datagrip/datagrip-2020.3.2.tar.gz
+            isLatest: true
+
+          # PHPStorm
+          - imageName: projector-phpstorm
+            tag: 2019.3
+            downloadLink: https://download.jetbrains.com/webide/PhpStorm-2019.3.4.tar.gz
+          - imageName: projector-phpstorm
+            tag: 2020.2
+            downloadLink: https://download.jetbrains.com/webide/PhpStorm-2020.2.4.tar.gz
+          - imageName: projector-phpstorm
+            tag: 2020.3
+            downloadLink: https://download.jetbrains.com/webide/PhpStorm-2020.3.3.tar.gz
+            isLatest: true
+
+          # Pycharm community
+          - imageName: projector-pycharm-c
+            tag: 2019.3
+            downloadLink: https://download.jetbrains.com/python/pycharm-community-2019.3.5.tar.gz
+          - imageName: projector-pycharm-c
+            tag: 2020.2
+            downloadLink: https://download.jetbrains.com/python/pycharm-community-2020.2.5.tar.gz
+          - imageName: projector-pycharm-c
+            tag: 2020.3
+            downloadLink: https://download.jetbrains.com/python/pycharm-community-2020.3.5.tar.gz
+            isLatest: true
+
+          # Pycharm professional
+          - imageName: projector-pycharm-p
+            tag: 2019.3
+            downloadLink: https://download.jetbrains.com/python/pycharm-professional-2019.3.5.tar.gz
+          - imageName: projector-pycharm-p
+            tag: 2020.2
+            downloadLink: https://download.jetbrains.com/python/pycharm-professional-2020.2.5.tar.gz
+          - imageName: projector-pycharm-p
+            tag: 2020.3
+            downloadLink: https://download.jetbrains.com/python/pycharm-professional-2020.3.5.tar.gz
+            isLatest: true
+
+          # Rider
+          - imageName: projector-rider
+            tag: 2020.2
+            downloadLink: https://download.jetbrains.com/rider/JetBrains.Rider-2020.2.5.tar.gz
+          - imageName: projector-rider
+            tag: 2020.3
+            downloadLink: https://download.jetbrains.com/rider/JetBrains.Rider-2020.3.4.tar.gz
+            isLatest: true
+
+          # Rubymine
+          - imageName: projector-rubymine
+            tag: 2020.3
+            downloadLink: https://download.jetbrains.com/ruby/RubyMine-2020.3.3.tar.gz
+            isLatest: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          path: projector-docker
+
+      - name: Checkout server repo
+        uses: actions/checkout@v2
+        with:
+          repository: JetBrains/projector-server
+          path: projector-server
+          ref: refs/tags/${{ env.PROJECTOR_STABLE }}
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+
+      - name: Push stable version
+        run: |
+          cd projector-docker
+          ./build-container.sh ${{ secrets.DOCKER_IMAGE_OWNER }}/${{ matrix.imageName}}:${{ matrix.tag }}-projector-${{ env.PROJECTOR_STABLE }} ${{ matrix.downloadLink }}
+          docker push ${{ secrets.DOCKER_IMAGE_OWNER }}/${{ matrix.ImageName }}:${{ matrix.tag }}-projector-${{ env.PROJECTOR_STABLE }}
+
+      - name: Push latest
+        if: ${{ matrix. isLatest }}
+        run: |
+          docker tag ${{ secrets.DOCKER_IMAGE_OWNER }}/${{ matrix.imageName}}:${{ matrix.tag }}-projector-${{ env.PROJECTOR_STABLE }} ${{ secrets.DOCKER_IMAGE_OWNER }}/${{ matrix.imageName}}:latest
+          docker push ${{ secrets.DOCKER_IMAGE_OWNER }}/${{ matrix.ImageName }}:latest
