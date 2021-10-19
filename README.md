@@ -29,7 +29,7 @@ docker pull registry.jetbrains.team/p/prj/containers/projector-rubymine
 docker pull registry.jetbrains.team/p/prj/containers/projector-webstorm
 ```
 
-on space published only latest tested browser and latest version of projector
+on space published only latest tested IDE and latest version of projector
 
 or from [DockerHub](https://hub.docker.com/orgs/jetbrains/repositories):
 
@@ -47,8 +47,10 @@ docker pull jetbrains/projector-clion:latest
 docker pull jetbrains/projector-datagrip:latest
 ```
 tags are distributed on DockerHub as follows:
- - `:latest` is latest tested version of IDE and latest projector version;
- - `:Y.M.P` Year Minor Patch version of IDE, like projector-webstorm:2020.3.3, and latest version of projector.
+ - `:latest` This image contains the latest up-to-date version of the tested IDE with the latest stable version of the Projector;
+ - `:develop` This image contains the latest up-to-date version of the tested IDE with the latest commit of the Projector repository; 
+ - `:<IDE_VERSION>-develop` This image contains the selected version of IDE with the latest commit of the Projector repository; 
+ - `<IDE_VERSION>-projector-<PROJECTOR_VERSION>` This image contains the selected version of IDE with the selected stable version of Projector.
 
 After that, you can run it via the following command (just replace `IMAGE_NAME` with the needed name, for
 example, `registry.jetbrains.team/p/prj/containers/projector-clion`):
