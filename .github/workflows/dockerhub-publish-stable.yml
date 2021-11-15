@@ -9,7 +9,7 @@ jobs:
   docker:
     runs-on: ubuntu-latest
     env:
-      PROJECTOR_STABLE: v1.4.0
+      PROJECTOR_STABLE: v1.5.0
     strategy:
       matrix:
         include:
