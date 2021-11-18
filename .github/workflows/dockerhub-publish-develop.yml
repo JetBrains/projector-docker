@@ -20,6 +20,9 @@ jobs:
           - imageName: projector-webstorm
             tag: 2020.3
             downloadLink: https://download.jetbrains.com/webstorm/WebStorm-2020.3.3.tar.gz
+          - imageName: projector-webstorm
+            tag: 2021.2
+            downloadLink: https://download.jetbrains.com/webstorm/WebStorm-2021.2.3.tar.gz
             isLatest: true
 
           # Idea Community
@@ -35,6 +38,9 @@ jobs:
           - imageName: projector-idea-c
             tag: 2020.3
             downloadLink: https://download.jetbrains.com/idea/ideaIC-2020.3.4.tar.gz
+          - imageName: projector-idea-c
+            tag: 2021.2
+            downloadLink: https://download.jetbrains.com/idea/ideaIC-2021.2.3.tar.gz
             isLatest: true
 
           # Idea Ultimate
@@ -47,6 +53,9 @@ jobs:
           - imageName: projector-idea-u
             tag: 2020.3
             downloadLink: https://download.jetbrains.com/idea/ideaIU-2020.3.4.tar.gz
+          - imageName: projector-idea-u
+            tag: 2021.2
+            downloadLink: https://download.jetbrains.com/idea/ideaIU-2021.2.3.tar.gz
             isLatest: true
 
           # CLion
@@ -59,6 +68,9 @@ jobs:
           - imageName: projector-clion
             tag: 2020.3
             downloadLink: https://download.jetbrains.com/cpp/CLion-2020.3.4.tar.gz
+          - imageName: projector-clion
+            tag: 2021.2
+            downloadLink: https://download.jetbrains.com/cpp/CLion-2021.2.3.tar.gz
             isLatest: true
 
           # Goland
@@ -71,6 +83,9 @@ jobs:
           - imageName: projector-goland
             tag: 2020.3
             downloadLink: https://download.jetbrains.com/go/goland-2020.3.5.tar.gz
+          - imageName: projector-goland
+            tag: 2021.2
+            downloadLink: https://download.jetbrains.com/go/goland-2021.2.4.tar.gz
             isLatest: true
 
           # Datagrip
@@ -83,6 +98,9 @@ jobs:
           - imageName: projector-datagrip
             tag: 2020.3
             downloadLink: https://download.jetbrains.com/datagrip/datagrip-2020.3.2.tar.gz
+          - imageName: projector-datagrip
+            tag: 2021.2
+            downloadLink: https://download.jetbrains.com/datagrip/datagrip-2021.2.4.tar.gz
             isLatest: true
 
           # PHPStorm
@@ -95,6 +113,9 @@ jobs:
           - imageName: projector-phpstorm
             tag: 2020.3
             downloadLink: https://download.jetbrains.com/webide/PhpStorm-2020.3.3.tar.gz
+          - imageName: projector-phpstorm
+            tag: 2021.2
+            downloadLink: https://download.jetbrains.com/webide/PhpStorm-2021.2.3.tar.gz
             isLatest: true
 
           # Pycharm community
@@ -128,12 +149,18 @@ jobs:
           - imageName: projector-rider
             tag: 2020.3
             downloadLink: https://download.jetbrains.com/rider/JetBrains.Rider-2020.3.4.tar.gz
+          - imageName: projector-rider
+            tag: 2021.2
+            downloadLink: https://download.jetbrains.com/rider/JetBrains.Rider-2021.2.2.tar.gz
             isLatest: true
 
           # Rubymine
           - imageName: projector-rubymine
             tag: 2020.3
             downloadLink: https://download.jetbrains.com/ruby/RubyMine-2020.3.3.tar.gz
+          - imageName: projector-rubymine
+            tag: 2021.2
+            downloadLink: https://download.jetbrains.com/ruby/RubyMine-2021.2.3.tar.gz
             isLatest: true
 
     steps:
