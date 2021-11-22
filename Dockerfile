@@ -14,11 +14,10 @@
 # limitations under the License.
 #
 
-FROM debian AS ideDownloader
+FROM alpine:latest AS ideDownloader
 
 # prepare tools:
-RUN apt-get update
-RUN apt-get install wget -y
+RUN apk --no-cache add findutils
 # download IDE to the /ide dir:
 WORKDIR /download
 ARG downloadUrl
@@ -30,36 +29,43 @@ FROM amazoncorretto:11 as projectorGradleBuilder
 ENV PROJECTOR_DIR /projector
 
 # projector-server:
-ADD projector-server $PROJECTOR_DIR/projector-server
+ARG useLocalGradle="false"
+# Copy local projector-server or empty dir
+COPY build-tools/projector-server $PROJECTOR_DIR
+# If we dont use local projector-server get it from GIT and build
+RUN if [ "$useLocalGradle" = "false" ]; then \
+    rm -rf $PROJECTOR_DIR/projector-server && \
+    yum -y install git && \
+    git clone https://github.com/JetBrains/projector-server.git $PROJECTOR_DIR/projector-server; fi
 WORKDIR $PROJECTOR_DIR/projector-server
-ARG buildGradle
-RUN if [ "$buildGradle" = "true" ]; then ./gradlew clean; else echo "Skipping gradle build"; fi
-RUN if [ "$buildGradle" = "true" ]; then ./gradlew :projector-server:distZip; else echo "Skipping gradle build"; fi
+RUN if [ "$useLocalGradle" = "false" ]; then \
+    ./gradlew clean && \
+    ./gradlew :projector-server:distZip; \
+    fi
 RUN cd projector-server/build/distributions && find . -maxdepth 1 -type f -name projector-server-*.zip -exec mv {} projector-server.zip \;
 
-FROM debian AS projectorStaticFiles
+FROM alpine:latest AS projectorStaticFiles
 
 # prepare tools:
-RUN apt-get update
-RUN apt-get install unzip -y
+RUN apk --no-cache add findutils
 # create the Projector dir:
 ENV PROJECTOR_DIR /projector
 RUN mkdir -p $PROJECTOR_DIR
 # copy IDE:
 COPY --from=ideDownloader /ide $PROJECTOR_DIR/ide
-# copy projector files to the container:
-ADD projector-docker/static $PROJECTOR_DIR
+# copy projector static files to the container:
+ADD static $PROJECTOR_DIR
 # copy projector:
 COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-server/projector-server/build/distributions/projector-server.zip $PROJECTOR_DIR
 # prepare IDE - apply projector-server:
-RUN unzip $PROJECTOR_DIR/projector-server.zip
-RUN rm $PROJECTOR_DIR/projector-server.zip
-RUN find . -maxdepth 1 -type d -name projector-server-* -exec mv {} projector-server \;
-RUN mv projector-server $PROJECTOR_DIR/ide/projector-server
-RUN mv $PROJECTOR_DIR/ide-projector-launcher.sh $PROJECTOR_DIR/ide/bin
-RUN chmod 644 $PROJECTOR_DIR/ide/projector-server/lib/*
+RUN unzip $PROJECTOR_DIR/projector-server.zip && \
+    rm $PROJECTOR_DIR/projector-server.zip && \
+    find . -maxdepth 1 -type d -name projector-server-* -exec mv {} projector-server \; && \
+    mv projector-server $PROJECTOR_DIR/ide/projector-server && \
+    mv $PROJECTOR_DIR/ide-projector-launcher.sh $PROJECTOR_DIR/ide/bin && \
+    chmod 644 $PROJECTOR_DIR/ide/projector-server/lib/*
 
-FROM debian:10
+FROM ubuntu:latest
 
 RUN true \
 # Any command which returns non-zero exit code will cause this shell script to exit immediately:
@@ -71,7 +77,7 @@ RUN true \
 # packages for awt:
     && apt install -y libxext6 libxrender1 libxtst6 libxi6 libfreetype6 \
 # packages for user convenience:
-    git bash-completion wget sudo \
+    git bash-completion sudo wget \
 # packages for IDEA (to disable warnings):
     procps \
 # clean apt to reduce image size:
@@ -80,8 +86,8 @@ RUN true \
 
 # install specific packages for IDEs:
 ARG downloadUrl
-ADD projector-docker/build-tools/install-additional-software.sh /
-RUN bash /install-additional-software.sh $downloadUrl \
+ADD build-tools/install-additional-software.sh /
+RUN bash /install-additional-software.sh $downloadUrl && \
 # clean apt to reduce image size:
     && rm /install-additional-software.sh
 

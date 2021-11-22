@@ -2,7 +2,5 @@
 
 **
 
-!/projector-client/**
-!/projector-server/**
-!/projector-docker/static/**
-!/projector-docker/build-tools/**
+!/static/**
+!/build-tools/**
