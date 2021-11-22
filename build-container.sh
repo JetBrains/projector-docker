@@ -21,6 +21,10 @@ set -x # Activate debugging to show execution details: all commands will be prin
 
 containerName=${1:-projector-idea-c}
 downloadUrl=${2:-https://download.jetbrains.com/idea/ideaIC-2021.2.3.tar.gz}
+baseImage=${3:-"debian:10"}
 
 # build container:
-DOCKER_BUILDKIT=1 docker build --progress=plain -t "$containerName" --build-arg "downloadUrl=$downloadUrl" -f Dockerfile .
+DOCKER_BUILDKIT=1 docker build --progress=plain -t "$containerName" \
+  --build-arg "downloadUrl=$downloadUrl" \
+  --build-arg "baseImage=$baseImage"
+  -f Dockerfile .

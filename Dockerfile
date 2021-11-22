@@ -67,7 +67,8 @@ RUN unzip $PROJECTOR_DIR/projector-server.zip && \
     mv $PROJECTOR_DIR/ide-projector-launcher.sh $PROJECTOR_DIR/ide/bin && \
     chmod 644 $PROJECTOR_DIR/ide/projector-server/lib/*
 
-FROM ubuntu:latest
+ARG baseImage
+FROM $baseImage
 
 RUN true \
 # Any command which returns non-zero exit code will cause this shell script to exit immediately:
@@ -82,7 +83,7 @@ RUN true \
     git bash-completion sudo wget \
 # packages for IDEA (to disable warnings):
     procps \
-# clean apt to reduce image size^
+# clean apt to reduce image size:
     && rm -rf /var/lib/apt/lists/* && rm -rf /var/cache/apt
 
 # install specific packages for IDEs:

@@ -76,7 +76,7 @@ Clones projector projects from Git to proper locations:
 
 **Note**: if you already have these projects locally existing, you can place them to proper locations and avoid this script.
 
-### `build-container.sh [containerName [ideDownloadUrl]]`
+### `build-container.sh [containerName [ideDownloadUrl] [baseImage]]`
 Compiles Projector inside Docker and builds a Docker container locally.
 
 ### `build-container-dev.sh [containerName [ideDownloadUrl] [localGradlePath]]`
