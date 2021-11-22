@@ -71,7 +71,7 @@ RUN true \
 # packages for awt:
     && apt install -y libxext6 libxrender1 libxtst6 libxi6 libfreetype6 \
 # packages for user convenience:
-    git bash-completion wget \
+    git bash-completion wget sudo \
 # packages for IDEA (to disable warnings):
     procps \
 # clean apt to reduce image size:
@@ -100,7 +100,8 @@ RUN true \
     && mv $PROJECTOR_DIR/run.sh run.sh \
 # change user to non-root (http://pjdietz.com/2016/08/28/nginx-in-docker-without-root.html):
     && mv $PROJECTOR_DIR/$PROJECTOR_USER_NAME /home \
-    && useradd -m -d /home/$PROJECTOR_USER_NAME -s /bin/bash $PROJECTOR_USER_NAME \
+    && useradd -d /home/$PROJECTOR_USER_NAME -s /bin/bash -G sudo $PROJECTOR_USER_NAME \
+    && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
     && chown -R $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME /home/$PROJECTOR_USER_NAME \
     && chown -R $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME $PROJECTOR_DIR/ide/bin \
     && chown $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME run.sh
