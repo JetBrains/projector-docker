@@ -14,8 +14,6 @@
 # limitations under the License.
 #
 
-#TODO: Add multiarch and slim images PRJ-702
-
 FROM alpine:latest AS ideDownloader
 
 # prepare tools:
@@ -67,8 +65,7 @@ RUN unzip $PROJECTOR_DIR/projector-server.zip && \
     mv $PROJECTOR_DIR/ide-projector-launcher.sh $PROJECTOR_DIR/ide/bin && \
     chmod 644 $PROJECTOR_DIR/ide/projector-server/lib/*
 
-ARG baseImage
-FROM $baseImage
+FROM ubuntu:latest
 
 RUN true \
 # Any command which returns non-zero exit code will cause this shell script to exit immediately:
@@ -105,11 +102,12 @@ RUN true \
     && set -e \
 # Activate debugging to show execution details: all commands will be printed before execution
     && set -x \
-# move run script:
+# install packages:
     && mv $PROJECTOR_DIR/run.sh run.sh \
 # change user to non-root (http://pjdietz.com/2016/08/28/nginx-in-docker-without-root.html):
     && mv $PROJECTOR_DIR/$PROJECTOR_USER_NAME /home \
-    && useradd -m -d /home/$PROJECTOR_USER_NAME -s /bin/bash $PROJECTOR_USER_NAME \
+    && useradd -d /home/$PROJECTOR_USER_NAME -s /bin/bash -G sudo $PROJECTOR_USER_NAME \
+    && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
     && chown -R $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME /home/$PROJECTOR_USER_NAME \
     && chown -R $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME $PROJECTOR_DIR/ide/bin \
     && chown $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME run.sh
