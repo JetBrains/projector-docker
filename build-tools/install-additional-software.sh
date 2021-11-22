@@ -21,6 +21,10 @@
 #set -x # Activate debugging to show execution details: all commands will be printed before execution
 
 DOWNLOAD_URL=$1
+# Define filter function
+function string_filter {
+  sed -z 's/  */ /g;s/\n//g' $1
+}
 
 # In SOFTWARE_LIST block add software package names. This string was directly passed to `apt install` command
 # In ADDITIONAL_COMMANDS you can add any BASH commands. Please, note that you need to escape $ character by backslash (\)
@@ -31,12 +35,12 @@ case $DOWNLOAD_URL in
 #
 # Block for CLion
   *CLion*)
-    SOFTWARE_LIST=$(sed -z 's/  */ /g;s/\n//g' <<- EOM
+    SOFTWARE_LIST=$(string_filter <<- EOM
       build-essential
       clang
 EOM
 )
-    ADDITIONAL_COMMANDS=$(sed -z 's/  */ /g;s/\n//g' <<- EOM
+    ADDITIONAL_COMMANDS=$(string_filter <<- EOM
 
 EOM
     );;
@@ -44,11 +48,11 @@ EOM
 #
 # Block for GoLand
   *goland*)
-    SOFTWARE_LIST=$(sed -z 's/  */ /g;s/\n//g' <<- EOM
+    SOFTWARE_LIST=$(string_filter <<- EOM
 
 EOM
 )
-    ADDITIONAL_COMMANDS=$(sed -z 's/  */ /g;s/\n//g' <<- EOM
+    ADDITIONAL_COMMANDS=$(string_filter <<- EOM
 
 EOM
     );;
@@ -56,11 +60,11 @@ EOM
 #
 # Block for DataGrip
   *datagrip*)
-    SOFTWARE_LIST=$(sed -z 's/  */ /g;s/\n//g' <<- EOM
+    SOFTWARE_LIST=$(string_filter <<- EOM
 
 EOM
 )
-    ADDITIONAL_COMMANDS=$(sed -z 's/  */ /g;s/\n//g' <<- EOM
+    ADDITIONAL_COMMANDS=$(string_filter <<- EOM
 
 EOM
     );;
@@ -68,11 +72,11 @@ EOM
 #
 # Block for PhpStorm
   *PhpStorm*)
-    SOFTWARE_LIST=$(sed -z 's/  */ /g;s/\n//g' <<- EOM
+    SOFTWARE_LIST=$(string_filter <<- EOM
 
 EOM
 )
-    ADDITIONAL_COMMANDS=$(sed -z 's/  */ /g;s/\n//g' <<- EOM
+    ADDITIONAL_COMMANDS=$(string_filter <<- EOM
 
 EOM
     );;
@@ -80,7 +84,7 @@ EOM
 #
 # Block for PyCharm
   *pycharm*)
-    SOFTWARE_LIST=$(sed -z 's/  */ /g;s/\n//g' <<- EOM
+    SOFTWARE_LIST=$(string_filter <<- EOM
         python2
         python3
         python3-distutils
@@ -88,7 +92,7 @@ EOM
         python3-setuptools
 EOM
 )
-    ADDITIONAL_COMMANDS=$(sed -z 's/  */ /g;s/\n//g' <<- EOM
+    ADDITIONAL_COMMANDS=$(string_filter <<- EOM
 
 EOM
     );;
@@ -96,11 +100,11 @@ EOM
 #
 # Block for RubyMine
   *RubyMine*)
-    SOFTWARE_LIST=$(sed -z 's/  */ /g;s/\n//g' <<- EOM
+    SOFTWARE_LIST=$(string_filter <<- EOM
 
 EOM
 )
-    ADDITIONAL_COMMANDS=$(sed -z 's/  */ /g;s/\n//g' <<- EOM
+    ADDITIONAL_COMMANDS=$(string_filter <<- EOM
 
 EOM
     );;
@@ -108,11 +112,11 @@ EOM
 #
 # Block for WebStorm
   *WebStorm*)
-    SOFTWARE_LIST=$(sed -z 's/  */ /g;s/\n//g' <<- EOM
+    SOFTWARE_LIST=$(string_filter <<- EOM
 
 EOM
 )
-    ADDITIONAL_COMMANDS=$(sed -z 's/  */ /g;s/\n//g' <<- EOM
+    ADDITIONAL_COMMANDS=$(string_filter <<- EOM
 
 EOM
     );;
@@ -120,7 +124,7 @@ EOM
 #
 # Block for Rider
   *Rider*)
-    SOFTWARE_LIST=$(sed -z 's/  */ /g;s/\n//g' <<- EOM
+    SOFTWARE_LIST=$(string_filter <<- EOM
         apt-transport-https
         dirmngr
         gnupg
@@ -128,7 +132,7 @@ EOM
         lsb-release
 EOM
 )
-    ADDITIONAL_COMMANDS=$(sed -z 's/  */ /g;s/\n//g' <<- EOM
+    ADDITIONAL_COMMANDS=$(string_filter <<- EOM
         apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF &&
         echo "deb https://download.mono-project.com/repo/\$(lsb_release -i -s | tr '[:upper:]' '[:lower:]') stable-\$(lsb_release -c -s) main" |
         tee /etc/apt/sources.list.d/mono-official-stable.list &&
@@ -141,5 +145,8 @@ EOM
 
 esac
 
+apt update
 apt install -y${SOFTWARE_LIST}
 sh -c "$ADDITIONAL_COMMANDS"
+rm -rf /var/lib/apt/lists/*
+rm -rf /var/cache/apt
