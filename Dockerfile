@@ -34,14 +34,13 @@ ARG useLocalGradle="false"
 COPY build-tools/projector-server $PROJECTOR_DIR
 # If we dont use local projector-server get it from GIT and build
 RUN if [ "$useLocalGradle" = "false" ]; then \
-    rm -rf $PROJECTOR_DIR/projector-server && \
-    yum -y install git && \
-    git clone https://github.com/JetBrains/projector-server.git $PROJECTOR_DIR/projector-server; fi
+    rm -rf $PROJECTOR_DIR/projector-server \
+    && yum -y install git \
+    && git clone https://github.com/JetBrains/projector-server.git $PROJECTOR_DIR/projector-server; fi
 WORKDIR $PROJECTOR_DIR/projector-server
 RUN if [ "$useLocalGradle" = "false" ]; then \
-    ./gradlew clean && \
-    ./gradlew :projector-server:distZip; \
-    fi
+    ./gradlew clean \
+    && ./gradlew :projector-server:distZip; fi
 RUN cd projector-server/build/distributions && find . -maxdepth 1 -type f -name projector-server-*.zip -exec mv {} projector-server.zip \;
 
 FROM alpine:latest AS projectorStaticFiles
@@ -58,12 +57,12 @@ ADD static $PROJECTOR_DIR
 # copy projector:
 COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-server/projector-server/build/distributions/projector-server.zip $PROJECTOR_DIR
 # prepare IDE - apply projector-server:
-RUN unzip $PROJECTOR_DIR/projector-server.zip && \
-    rm $PROJECTOR_DIR/projector-server.zip && \
-    find . -maxdepth 1 -type d -name projector-server-* -exec mv {} projector-server \; && \
-    mv projector-server $PROJECTOR_DIR/ide/projector-server && \
-    mv $PROJECTOR_DIR/ide-projector-launcher.sh $PROJECTOR_DIR/ide/bin && \
-    chmod 644 $PROJECTOR_DIR/ide/projector-server/lib/*
+RUN unzip $PROJECTOR_DIR/projector-server.zip \
+    && rm $PROJECTOR_DIR/projector-server.zip \
+    && find . -maxdepth 1 -type d -name projector-server-* -exec mv {} projector-server \; \
+    && mv projector-server $PROJECTOR_DIR/ide/projector-server \
+    && mv $PROJECTOR_DIR/ide-projector-launcher.sh $PROJECTOR_DIR/ide/bin \
+    && chmod 644 $PROJECTOR_DIR/ide/projector-server/lib/*
 
 FROM ubuntu:latest
 
@@ -87,7 +86,7 @@ RUN true \
 # install specific packages for IDEs:
 ARG downloadUrl
 ADD build-tools/install-additional-software.sh /
-RUN bash /install-additional-software.sh $downloadUrl && \
+RUN bash /install-additional-software.sh $downloadUrl \
 # clean apt to reduce image size:
     && rm /install-additional-software.sh
 

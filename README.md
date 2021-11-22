@@ -71,12 +71,12 @@ If you want to access IDE run on another host, you need to change page parameter
 
 ## Script list
 ### `clone-projector-core.sh`
-Clones projector projects from Git to proper locations:
+Clones projector projects from Git to proper locations (not redundant for regular use):
 - `../projector-server`.
 
 **Note**: if you already have these projects locally existing, you can place them to proper locations and avoid this script.
 
-### `build-container.sh [containerName [ideDownloadUrl] [baseImage]]`
+### `build-container.sh [containerName [ideDownloadUrl]]`
 Compiles Projector inside Docker and builds a Docker container locally.
 
 ### `build-container-dev.sh [containerName [ideDownloadUrl] [localGradlePath]]`
