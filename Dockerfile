@@ -66,7 +66,7 @@ RUN true \
     && set -e \
 # Activate debugging to show execution details: all commands will be printed before execution
     && set -x \
-# move run script:
+# install packages:
     && apt update \
 # packages for awt:
     && apt install -y libxext6 libxrender1 libxtst6 libxi6 libfreetype6 \
