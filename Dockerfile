@@ -14,11 +14,12 @@
 # limitations under the License.
 #
 
-FROM debian AS ideDownloader
+#TODO: Add multiarch and slim images PRJ-702
+
+FROM alpine:latest AS ideDownloader
 
 # prepare tools:
-RUN apt-get update
-RUN apt-get install wget -y
+RUN apk --no-cache add findutils
 # download IDE to the /ide dir:
 WORKDIR /download
 ARG downloadUrl
@@ -30,36 +31,43 @@ FROM amazoncorretto:11 as projectorGradleBuilder
 ENV PROJECTOR_DIR /projector
 
 # projector-server:
-ADD projector-server $PROJECTOR_DIR/projector-server
+ARG useLocalGradle="false"
+# Copy local projector-server or empty dir
+COPY build-tools/projector-server $PROJECTOR_DIR
+# If we dont use local projector-server get it from GIT and build
+RUN if [ "$useLocalGradle" = "false" ]; then \
+    rm -rf $PROJECTOR_DIR/projector-server && \
+    yum -y install git && \
+    git clone https://github.com/JetBrains/projector-server.git $PROJECTOR_DIR/projector-server; fi
 WORKDIR $PROJECTOR_DIR/projector-server
-ARG buildGradle
-RUN if [ "$buildGradle" = "true" ]; then ./gradlew clean; else echo "Skipping gradle build"; fi
-RUN if [ "$buildGradle" = "true" ]; then ./gradlew :projector-server:distZip; else echo "Skipping gradle build"; fi
+RUN if [ "$useLocalGradle" = "false" ]; then \
+    ./gradlew clean && \
+    ./gradlew :projector-server:distZip; \
+    fi
 RUN cd projector-server/build/distributions && find . -maxdepth 1 -type f -name projector-server-*.zip -exec mv {} projector-server.zip \;
 
-FROM debian AS projectorStaticFiles
+FROM alpine:latest AS projectorStaticFiles
 
 # prepare tools:
-RUN apt-get update
-RUN apt-get install unzip -y
+RUN apk --no-cache add findutils
 # create the Projector dir:
 ENV PROJECTOR_DIR /projector
 RUN mkdir -p $PROJECTOR_DIR
 # copy IDE:
 COPY --from=ideDownloader /ide $PROJECTOR_DIR/ide
-# copy projector files to the container:
-ADD projector-docker/static $PROJECTOR_DIR
+# copy projector static files to the container:
+ADD static $PROJECTOR_DIR
 # copy projector:
 COPY --from=projectorGradleBuilder $PROJECTOR_DIR/projector-server/projector-server/build/distributions/projector-server.zip $PROJECTOR_DIR
 # prepare IDE - apply projector-server:
-RUN unzip $PROJECTOR_DIR/projector-server.zip
-RUN rm $PROJECTOR_DIR/projector-server.zip
-RUN find . -maxdepth 1 -type d -name projector-server-* -exec mv {} projector-server \;
-RUN mv projector-server $PROJECTOR_DIR/ide/projector-server
-RUN mv $PROJECTOR_DIR/ide-projector-launcher.sh $PROJECTOR_DIR/ide/bin
-RUN chmod 644 $PROJECTOR_DIR/ide/projector-server/lib/*
+RUN unzip $PROJECTOR_DIR/projector-server.zip && \
+    rm $PROJECTOR_DIR/projector-server.zip && \
+    find . -maxdepth 1 -type d -name projector-server-* -exec mv {} projector-server \; && \
+    mv projector-server $PROJECTOR_DIR/ide/projector-server && \
+    mv $PROJECTOR_DIR/ide-projector-launcher.sh $PROJECTOR_DIR/ide/bin && \
+    chmod 644 $PROJECTOR_DIR/ide/projector-server/lib/*
 
-FROM debian:10
+FROM ubuntu:latest
 
 RUN apt update && \
 # packages for awt:
@@ -71,7 +79,7 @@ RUN apt update && \
 
 # install specific packages for IDEs:
 ARG downloadUrl
-ADD projector-docker/build-tools/install-additional-software.sh /
+ADD build-tools/install-additional-software.sh /
 RUN bash /install-additional-software.sh $downloadUrl
 
 # clean apt to reduce image size:
@@ -83,20 +91,15 @@ COPY --from=projectorStaticFiles $PROJECTOR_DIR $PROJECTOR_DIR
 
 ENV PROJECTOR_USER_NAME projector-user
 
-RUN true \
-# Any command which returns non-zero exit code will cause this shell script to exit immediately:
-    && set -e \
-# Activate debugging to show execution details: all commands will be printed before execution
-    && set -x \
 # move run script:
-    && mv $PROJECTOR_DIR/run.sh run.sh \
+RUN mv $PROJECTOR_DIR/run.sh run.sh && \
 # change user to non-root (http://pjdietz.com/2016/08/28/nginx-in-docker-without-root.html):
-    && mv $PROJECTOR_DIR/$PROJECTOR_USER_NAME /home \
-    && useradd -d /home/$PROJECTOR_USER_NAME -s /bin/bash -G sudo $PROJECTOR_USER_NAME \
-    && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
-    && chown -R $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME /home/$PROJECTOR_USER_NAME \
-    && chown -R $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME $PROJECTOR_DIR/ide/bin \
-    && chown $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME run.sh
+    mv $PROJECTOR_DIR/$PROJECTOR_USER_NAME /home && \
+    useradd -d /home/$PROJECTOR_USER_NAME -s /bin/bash -G sudo $PROJECTOR_USER_NAME && \
+    echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers && \
+    chown -R $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME /home/$PROJECTOR_USER_NAME && \
+    chown -R $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME $PROJECTOR_DIR/ide/bin && \
+    chown $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME run.sh
 
 USER $PROJECTOR_USER_NAME
 ENV HOME /home/$PROJECTOR_USER_NAME

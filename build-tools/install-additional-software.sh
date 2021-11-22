@@ -135,6 +135,7 @@ EOM
         wget https://packages.microsoft.com/config/\$(lsb_release -i -s | tr '[:upper:]' '[:lower:]')/\$(lsb_release -r -s)/packages-microsoft-prod.deb &&
         dpkg -i packages-microsoft-prod.deb && rm packages-microsoft-prod.deb &&
         apt update &&
+        DEBIAN_FRONTEND="noninteractive" \
         apt-get install -y dotnet-sdk-3.1 aspnetcore-runtime-3.1 mono-devel
 EOM
     );;
