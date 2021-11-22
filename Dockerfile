@@ -69,21 +69,28 @@ RUN unzip $PROJECTOR_DIR/projector-server.zip && \
 
 FROM ubuntu:latest
 
-RUN apt update && \
+RUN true \
+# Any command which returns non-zero exit code will cause this shell script to exit immediately:
+    && set -e \
+# Activate debugging to show execution details: all commands will be printed before execution
+    && set -x \
+# move run script:
+    && apt update && \
 # packages for awt:
     apt install -y libxext6 libxrender1 libxtst6 libxi6 libfreetype6 \
 # packages for user convenience:
     git bash-completion sudo wget \
 # packages for IDEA (to disable warnings):
-    procps
+    procps \
+# clean apt to reduce image size^
+    && rm -rf /var/lib/apt/lists/* && rm -rf /var/cache/apt
 
 # install specific packages for IDEs:
 ARG downloadUrl
 ADD build-tools/install-additional-software.sh /
-RUN bash /install-additional-software.sh $downloadUrl
-
+RUN bash /install-additional-software.sh $downloadUrl && \
 # clean apt to reduce image size:
-RUN rm /install-additional-software.sh && rm -rf /var/lib/apt/lists/* && rm -rf /var/cache/apt
+    rm /install-additional-software.sh
 
 # copy the Projector dir:
 ENV PROJECTOR_DIR /projector
@@ -91,6 +98,11 @@ COPY --from=projectorStaticFiles $PROJECTOR_DIR $PROJECTOR_DIR
 
 ENV PROJECTOR_USER_NAME projector-user
 
+RUN true \
+# Any command which returns non-zero exit code will cause this shell script to exit immediately:
+    && set -e \
+# Activate debugging to show execution details: all commands will be printed before execution
+    && set -x \
 # move run script:
 RUN mv $PROJECTOR_DIR/run.sh run.sh && \
 # change user to non-root (http://pjdietz.com/2016/08/28/nginx-in-docker-without-root.html):
