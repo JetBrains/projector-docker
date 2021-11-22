@@ -75,23 +75,24 @@ RUN true \
     && set -e \
 # Activate debugging to show execution details: all commands will be printed before execution
     && set -x \
-# move run script:
-    && apt update && \
+# install packages:
+    && apt update \
 # packages for awt:
-    apt install -y libxext6 libxrender1 libxtst6 libxi6 libfreetype6 \
+    && apt install -y libxext6 libxrender1 libxtst6 libxi6 libfreetype6 \
 # packages for user convenience:
     git bash-completion sudo wget \
 # packages for IDEA (to disable warnings):
     procps \
 # clean apt to reduce image size:
-    && rm -rf /var/lib/apt/lists/* && rm -rf /var/cache/apt
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /var/cache/apt
 
 # install specific packages for IDEs:
 ARG downloadUrl
 ADD build-tools/install-additional-software.sh /
 RUN bash /install-additional-software.sh $downloadUrl && \
 # clean apt to reduce image size:
-    rm /install-additional-software.sh
+    && rm /install-additional-software.sh
 
 # copy the Projector dir:
 ENV PROJECTOR_DIR /projector
@@ -105,14 +106,13 @@ RUN true \
 # Activate debugging to show execution details: all commands will be printed before execution
     && set -x \
 # move run script:
-RUN mv $PROJECTOR_DIR/run.sh run.sh && \
+    && mv $PROJECTOR_DIR/run.sh run.sh \
 # change user to non-root (http://pjdietz.com/2016/08/28/nginx-in-docker-without-root.html):
-    mv $PROJECTOR_DIR/$PROJECTOR_USER_NAME /home && \
-    useradd -d /home/$PROJECTOR_USER_NAME -s /bin/bash -G sudo $PROJECTOR_USER_NAME && \
-    echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers && \
-    chown -R $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME /home/$PROJECTOR_USER_NAME && \
-    chown -R $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME $PROJECTOR_DIR/ide/bin && \
-    chown $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME run.sh
+    && mv $PROJECTOR_DIR/$PROJECTOR_USER_NAME /home \
+    && useradd -m -d /home/$PROJECTOR_USER_NAME -s /bin/bash $PROJECTOR_USER_NAME \
+    && chown -R $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME /home/$PROJECTOR_USER_NAME \
+    && chown -R $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME $PROJECTOR_DIR/ide/bin \
+    && chown $PROJECTOR_USER_NAME.$PROJECTOR_USER_NAME run.sh
 
 USER $PROJECTOR_USER_NAME
 ENV HOME /home/$PROJECTOR_USER_NAME
