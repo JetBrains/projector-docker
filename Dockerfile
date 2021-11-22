@@ -67,22 +67,23 @@ RUN true \
 # Activate debugging to show execution details: all commands will be printed before execution
     && set -x \
 # move run script:
-    && apt update && \
+    && apt update \
 # packages for awt:
-    apt install -y libxext6 libxrender1 libxtst6 libxi6 libfreetype6 \
+    && apt install -y libxext6 libxrender1 libxtst6 libxi6 libfreetype6 \
 # packages for user convenience:
     git bash-completion wget \
 # packages for IDEA (to disable warnings):
     procps \
 # clean apt to reduce image size^
-    && rm -rf /var/lib/apt/lists/* && rm -rf /var/cache/apt
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /var/cache/apt
 
 # install specific packages for IDEs:
 ARG downloadUrl
 ADD projector-docker/build-tools/install-additional-software.sh /
-RUN bash /install-additional-software.sh $downloadUrl && \
+RUN bash /install-additional-software.sh $downloadUrl \
 # clean apt to reduce image size:
-    rm /install-additional-software.sh
+    && rm /install-additional-software.sh
 
 # copy the Projector dir:
 ENV PROJECTOR_DIR /projector
