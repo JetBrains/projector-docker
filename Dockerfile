@@ -74,7 +74,7 @@ RUN true \
     git bash-completion wget \
 # packages for IDEA (to disable warnings):
     procps \
-# clean apt to reduce image size^
+# clean apt to reduce image size:
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/cache/apt
 
