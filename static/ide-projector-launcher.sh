@@ -50,7 +50,7 @@ cp "$IDE_RUN_FILE_NAME.sh" "$IDE_RUN_FILE_NAME-projector.sh"
 # classpath "$CLASSPATH"
 # to
 # classpath "$CLASSPATH:$IDE_HOME/projector-server/lib/*"
-sed -i 's+classpath "$CLASSPATH"+classpath "$CLASSPATH:$IDE_HOME/projector-server/lib/*"+g' "$IDE_RUN_FILE_NAME-projector.sh"
+sed -i 's+classpath "$CLASS_PATH"+classpath "$CLASS_PATH:$IDE_HOME/projector-server/lib/*" --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.desktop/java.awt.dnd.peer=ALL-UNNAMED+g' "$IDE_RUN_FILE_NAME-projector.sh"
 
 # change
 # com.intellij.idea.Main
