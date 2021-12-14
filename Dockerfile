@@ -22,10 +22,10 @@ RUN apt-get install wget -y
 # download IDE to the /ide dir:
 WORKDIR /download
 ARG downloadUrl
-RUN wget -q $downloadUrl -O - | tar -xz
+ADD idea-IU-221.2114 /download/idea-IU-221.2114
 RUN find . -maxdepth 1 -type d -name * -execdir mv {} /ide \;
 
-FROM amazoncorretto:11 as projectorGradleBuilder
+FROM amazoncorretto:17 as projectorGradleBuilder
 
 ENV PROJECTOR_DIR /projector
 
