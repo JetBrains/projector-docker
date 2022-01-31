@@ -29,7 +29,7 @@ docker pull registry.jetbrains.team/p/prj/containers/projector-rubymine
 docker pull registry.jetbrains.team/p/prj/containers/projector-webstorm
 ```
 
-on space published only latest tested IDE and latest version of projector
+on space published only latest tested IDE and develop version of projector,
 
 or from [DockerHub](https://hub.docker.com/orgs/jetbrains/repositories):
 
@@ -46,7 +46,7 @@ docker pull jetbrains/projector-goland:latest
 docker pull jetbrains/projector-clion:latest
 docker pull jetbrains/projector-datagrip:latest
 ```
-tags are distributed on DockerHub as follows:
+Tags are distributed on DockerHub as follows:
  - `:latest` This image contains the latest up-to-date version of the tested IDE with the latest stable version of the Projector;
  - `:develop` This image contains the latest up-to-date version of the tested IDE with the latest commit of the Projector repository; 
  - `:<IDE_VERSION>-develop` This image contains the selected version of IDE with the latest commit of the Projector repository; 
