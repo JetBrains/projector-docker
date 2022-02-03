@@ -11,9 +11,32 @@ Some scripts to create and run a Docker container with Projector and JetBrains I
 
 How to run JetBrains IDE in Docker and access it via a web browser?
 
-Firstly, pull an image with needed IDE 
+### Step 1
+Firstly, pull an image with needed IDE. You can do it in two ways: 
 
-from Space:
+#### The first one is to pull it from [DockerHub](https://hub.docker.com/orgs/jetbrains/repositories):
+
+```shell
+docker pull jetbrains/projector-clion
+docker pull jetbrains/projector-datagrip
+docker pull jetbrains/projector-goland
+docker pull jetbrains/projector-idea-c
+docker pull jetbrains/projector-idea-u
+docker pull jetbrains/projector-phpstorm
+docker pull jetbrains/projector-pycharm-c
+docker pull jetbrains/projector-pycharm-p
+docker pull jetbrains/projector-rider
+docker pull jetbrains/projector-rubymine
+docker pull jetbrains/projector-webstorm
+```
+Tags are distributed on DockerHub as follows:
+- `:latest` – this image contains the **latest up-to-date** version of the tested IDE with the latest **stable** version of the Projector;
+- `:develop` – this image contains the **latest up-to-date** version of the tested IDE with the **latest commit** of the Projector repository;
+- `:<IDE_VERSION>-develop` – this image contains the **selected** version of the IDE with the **latest commit** of the Projector repository;
+- `:<IDE_VERSION>-projector-<PROJECTOR_VERSION>` – this image contains the **selected** version of the IDE with the **selected stable** version of Projector.
+
+#### The second way is to pull it from Space:
+_On Space, only the latest tested IDE and the `develop` version of Projector are published._
 
 ```shell
 docker pull registry.jetbrains.team/p/prj/containers/projector-clion
@@ -29,31 +52,10 @@ docker pull registry.jetbrains.team/p/prj/containers/projector-rubymine
 docker pull registry.jetbrains.team/p/prj/containers/projector-webstorm
 ```
 
-on space published only latest tested IDE and develop version of projector,
-
-or from [DockerHub](https://hub.docker.com/orgs/jetbrains/repositories):
-
-```shell
-docker pull jetbrains/projector-webstorm:latest
-docker pull jetbrains/projector-rider:latest
-docker pull jetbrains/projector-rubymine:latest
-docker pull jetbrains/projector-pycharm-p:latest
-docker pull jetbrains/projector-pycharm-c:latest
-docker pull jetbrains/projector-phpstorm:latest
-docker pull jetbrains/projector-idea-u:latest
-docker pull jetbrains/projector-idea-c:latest
-docker pull jetbrains/projector-goland:latest
-docker pull jetbrains/projector-clion:latest
-docker pull jetbrains/projector-datagrip:latest
-```
-Tags are distributed on DockerHub as follows:
- - `:latest` This image contains the latest up-to-date version of the tested IDE with the latest stable version of the Projector;
- - `:develop` This image contains the latest up-to-date version of the tested IDE with the latest commit of the Projector repository; 
- - `:<IDE_VERSION>-develop` This image contains the selected version of IDE with the latest commit of the Projector repository; 
- - `<IDE_VERSION>-projector-<PROJECTOR_VERSION>` This image contains the selected version of IDE with the selected stable version of Projector.
+### Step 2
 
 After that, you can run it via the following command (just replace `IMAGE_NAME` with the needed name, for
-example, `registry.jetbrains.team/p/prj/containers/projector-clion`):
+example, `jetbrains/projector-clion`):
 
 ```shell
 docker run --rm -p 8887:8887 -it IMAGE_NAME
